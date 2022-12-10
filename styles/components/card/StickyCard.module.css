@@ -6,8 +6,15 @@
   grid:
     "header" 5%
     "main" 1fr
+    "footer" 20%
     / 1fr;
   gap: 8px;
+}
+
+
+.foot {
+  grid-area: footer;
+  /* background-color: aqua; */
 }
 
 .header {

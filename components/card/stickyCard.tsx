@@ -1,4 +1,5 @@
 import styles from "../../styles/components/card/StickyCard.module.css";
+import ProgressBar from "../bar/progerssBar";
 import SimpleCard from "./simpleCard";
 
 interface LayoutProps {
@@ -57,6 +58,15 @@ export default function StickyCard({
             className={styles.main}
           >
             {childBody}
+          </div>
+          <div
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            className={styles.foot}
+          >
+            <ProgressBar/>
           </div>
         </section>
       </SimpleCard>
