@@ -5,6 +5,7 @@ import SimpleCard from "./simpleCard";
 interface LayoutProps {
   childHeader: React.ReactNode;
   childBody: React.ReactNode;
+  childFooter?: React.ReactNode;
   align_items: String;
   justify_content: String;
   height?: String;
@@ -19,6 +20,7 @@ interface LayoutProps {
 export default function StickyCard({
   childHeader,
   childBody,
+  childFooter,
   align_items,
   justify_content,
   height = "90%",
@@ -66,7 +68,7 @@ export default function StickyCard({
             }}
             className={styles.foot}
           >
-            <ProgressBar/>
+            {childFooter}
           </div>
         </section>
       </SimpleCard>

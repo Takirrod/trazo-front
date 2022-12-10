@@ -13,6 +13,7 @@ import NavbarAdmin from "./navbarAdmin";
 import ReactModal from "react-modal";
 import Input from "../components/input/input";
 import ModalBase from "../components/modal/modal";
+import ProgressBar from "../components/bar/progerssBar";
 
 // ReactModal.setAppElement("#main");
 
@@ -65,6 +66,7 @@ function StickyNotesDefault({
                 key={trazo}
                 childHeader={<></>} //For Sticky Note
                 childBody={<></>}
+                childFooter={<ProgressBar/>}
                 align_items={"center"}
                 justify_content={"center"}
               />
