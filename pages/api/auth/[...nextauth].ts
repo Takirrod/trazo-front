@@ -13,9 +13,8 @@ export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
     GoogleProvider({
-      clientId:
-        "164878245401-pa0hd7dban3p92pi5at97o4okrhhjhpl.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_ID || "",
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_SECRET || "",
     }),
   ],
   theme: {
