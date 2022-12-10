@@ -11,29 +11,35 @@ Es un proyecto creado para la materia de practica Interna para Alexis Marechal
 
 Before you begin, ensure you have met the following requirements:
 <!--- These are just example requirements. Add, duplicate or remove as required --->
-* NodeJS >= 14.6.0
-* npm
+| Nombre       | Versión | Descripción                                            | Instalación                                      |
+|--------------|---------|--------------------------------------------------------|--------------------------------------------------|
+| `NodeJS`     | ^14.6.0     | Entorno de programación de JavaScript.                 | `nvm install 14` https://github.com/nvm-sh/nvm   |
+| `NPM`        | ^9      | Gestor de paquetes de NodeJS.                          | `npm install -g npm@latest`                       |
 
 ## Ejecutando Trazo
 
 Para instalasr Trazo sigue los siguientes pasos
+```bash
+# Clonación del proyecto
+git clone https://github.com/Takirrod/trazo-front.git
 
-- Clona el repositorio del Frontend (https://github.com/Takirrod/trazo-front)[https://github.com/Takirrod/trazo-front]
-- Clona el repositorio del Backend (https://github.com/Takirrod/trazo-backend)[https://github.com/Takirrod/trazo-backend]
+# Ingresamos dentro de la carpeta del proyecto
+cd trazo-front
 
-Y en cada uno corre los siguientes comandos
-
-```
-npm i
-```
-para configurar el Backend corre:
-
-```
-npm run setup
+# Instalamos dependencias
+npm install
 ```
 
-Finalmente ejecutar en ambos:
-```
+Agregar variables de entorno
+```bash
+# Clonación del env de ejemplo
+co env.sample .env
+
+# Agregar el ID y el SECRET de google para la autenticacion
+
+# Si se desea cambiar la clave secreta
+
+# Iniciar el projecto
 npm start
 ```
 
