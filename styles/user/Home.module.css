@@ -1,0 +1,48 @@
+.container {
+  /* margin: 2em; */
+  /* background-color: brown; */
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.container_sticky_card {
+  height: 60%;
+  width: 100%;
+  padding: 2em;
+  display: grid;
+  gap: 2rem;
+  grid-auto-rows: 14rem;
+  grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
+  overflow: scroll;
+}
+
+.container_header_home {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 2rem;
+  color: whitesmoke;
+}
+
+.iconbtn_container {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  left: 3em;
+  bottom: 48%;
+
+  /* background-color: aliceblue; */
+}
+
+.container_footer_home {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: whitesmoke;
+}
+
+
+
+

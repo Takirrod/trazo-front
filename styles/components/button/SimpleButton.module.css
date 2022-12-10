@@ -1,0 +1,63 @@
+.btn_76,
+.btn_76 *,
+.btn_76 :after,
+.btn_76 :before,
+.btn_76:after,
+.btn_76:before {
+  border: none;
+  box-sizing: border-box;
+  /* height: 40em; */
+}
+.btn_76 {
+    background: var(--neon);
+    box-shadow: 0 0 5px var(--neon), 0 0 5px var(--neon), 0 0 20px var(--neon),
+      0 0 100px var(--neon);
+    color: #fff;
+    outline-color: transparent;
+    transition: 0.2s linear 0.6s;
+  
+}
+.btn_76:disabled {
+  cursor: default;
+}
+.btn_76:-moz-focusring {
+  outline: auto;
+}
+.btn_76 svg {
+  display: block;
+  vertical-align: middle;
+}
+.btn_76 [hidden] {
+  display: none;
+}
+.btn_76 {
+  --neon: var(--primaryAccent);
+  box-sizing: border-box;
+  display: block;
+  font-weight: 900;
+  -webkit-mask-image: none;
+  /* outline: 4px solid #fff; */
+  outline-offset: -4px;
+  overflow: hidden;
+  padding: 1.2rem 3rem;
+  position: relative;
+  text-transform: uppercase;
+  transition: 0.2s linear 0.1s;
+}
+.btn_76:hover {
+  background: var(--primary);
+  box-shadow: 0 0 5px var(--primary), 0 0 5px var(--primary), 0 0 5px var(--primary),    0 0 20px var(--primary);
+  color: #fff;
+  outline-color: transparent;
+  transition: 0.2s linear 0.2s;
+  -webkit-transition: 0.2s linear 0.2s;
+  -moz-transition: 0.2s linear 0.2s;
+  -ms-transition: 0.2s linear 0.2s;
+  -o-transition: 0.2s linear 0.2s;
+}
+.btn_76 span {
+  display: block;
+  inset: 0;
+  position: absolute;
+}
+

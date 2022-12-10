@@ -1,0 +1,41 @@
+.parent {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: var(--border_size) 1fr var(--border_size);
+  grid-template-rows: var(--border_size) 1fr var(--border_size);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  overflow: hidden;
+  /* background-color: brown; */
+}
+
+.div1 {
+  grid-area: 2 / 2 / 3 / 3;
+  background-color: var(--secondary);
+  display: flex;
+
+}
+
+.div2 {
+  height: 80vh;
+  width: 100%;
+  background: var(--primary);
+  background: linear-gradient(
+    133deg,
+    var(--primary) 0%,
+    var(--primary) 45%,
+    var(--transparent) 45%,
+    var(--transparent) 100%
+  );
+  overflow: hidden;
+}
+
+.container_navbar{
+  width: 100vw;
+  /* background-color: var(--primary); */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 0 2rem; */
+  z-index: 1;
+}

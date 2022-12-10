@@ -1,0 +1,38 @@
+.container_modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.container_modal_header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 1em;
+  /* background-color: #443e6d; */
+  color: whitesmoke;
+}
+
+.container_modal_body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 1em;
+  /* background-color: #443e6d; */
+  color: whitesmoke;
+}
+
+.container_button_modal {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
