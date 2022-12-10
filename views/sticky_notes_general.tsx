@@ -14,6 +14,7 @@ import ReactModal from "react-modal";
 import Input from "../components/input/input";
 import ModalBase from "../components/modal/modal";
 import ProgressBar from "../components/bar/progerssBar";
+import { useRouter } from "next/router";
 
 // ReactModal.setAppElement("#main");
 
@@ -25,7 +26,7 @@ interface LayoutProps {
   tittlePage?: string;
   modalAddButton?: React.ReactNode;
   onClickAddButton?: () => void;
-  stickyNotes: Array<any>;// TODO: cambiar por el tipo de dato correcto
+  stickyNotes: Array<any>; // TODO: cambiar por el tipo de dato correcto
 }
 
 function StickyNotesDefault({
@@ -37,13 +38,21 @@ function StickyNotesDefault({
 }: LayoutProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const pagePostsLimit = 6;
+  const router = useRouter();
 
   return (
     <div className={styles.container}>
       <Layout
         navbar={<NavbarAdmin />}
         childrenheader={
-          isButton ? <IconButtonHeader modalAddButton={modalAddButton} onClickAddButton={onClickAddButton} /> : <></>
+          isButton ? (
+            <IconButtonHeader
+              modalAddButton={modalAddButton}
+              onClickAddButton={onClickAddButton}
+            />
+          ) : (
+            <></>
+          )
         }
       >
         <div className={styles.container_header_home}>
@@ -59,6 +68,8 @@ function StickyNotesDefault({
             )
             .map((trazo) => (
               <StickyCard
+              
+                OnClick={() => router.push("/user/trazado")}
                 background_color={randomColor({
                   luminosity: "light",
                   hue: "random",
@@ -66,7 +77,7 @@ function StickyNotesDefault({
                 key={trazo}
                 childHeader={<></>} //For Sticky Note
                 childBody={<></>}
-                childFooter={<ProgressBar/>}
+                childFooter={<ProgressBar />}
                 align_items={"center"}
                 justify_content={"center"}
               />

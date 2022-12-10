@@ -15,6 +15,7 @@ interface LayoutProps {
   justify_content_header?: String;
   align_items_body?: String;
   justify_content_body?: String;
+  OnClick?: () => void;
 }
 
 export default function StickyCard({
@@ -30,10 +31,12 @@ export default function StickyCard({
   justify_content_header = "center",
   align_items_body = "center",
   justify_content_body = "center",
+  OnClick=()=>{},
 }: LayoutProps) {
   return (
     <>
       <SimpleCard
+      OnClick={OnClick}
         height={height}
         width={width}
         align_items={align_items}

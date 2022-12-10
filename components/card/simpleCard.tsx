@@ -8,6 +8,7 @@ interface LayoutProps {
   width?: String;
   background_color?: String;
   gap?: String;
+  OnClick?: () => void;
 }
 
 export default function SimpleCard({
@@ -18,11 +19,13 @@ export default function SimpleCard({
   width = "70%",
   background_color = "#e0e0e0",
   gap = "15%",
+  OnClick = () => {},
   
 }: LayoutProps) {
   return (
     <>
       <div
+      onClick={OnClick}
         style={{
           alignItems: `${align_items}`,
           justifyContent: `${justify_content}`,
