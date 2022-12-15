@@ -18,6 +18,12 @@ function Login() {
     `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist?email=${session?.user?.email}`
   );
 
+  const [{ data: dataToken }] = useAxios(
+    `/api/getYTData`
+  );
+
+  console.log(dataToken);
+
   useEffect(()=>{
     if(session){
       if(data.exist){

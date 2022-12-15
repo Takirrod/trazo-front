@@ -1,12 +1,13 @@
+import useAxios from "axios-hooks";
 import Link from "next/link";
+import { useEffect } from "react";
 import SimpleButton from "../../components/button/simpleButtton";
 import SimpleCard from "../../components/card/simpleCard";
 import StickyCard from "../../components/card/stickyCard";
 import CheckBox from "../../components/input/checkbox";
 import Layout from "../../components/layout/layout";
 import styles from "../../styles/user/Roles.module.css";
-
-const roles = ["Estudiante", "Profesor", "Secretario"];
+import { RolPublic } from "../../types/RolPublic";
 
 function Roles() {
   return (
@@ -21,8 +22,7 @@ function Roles() {
           />
           <div className={styles.button_container}>
             <Link href={"/user/home"}>
-            <SimpleButton type="button" btnText="Continuar"/>
-            
+              <SimpleButton type="button" btnText="Continuar" />
             </Link>
           </div>
         </div>
@@ -32,49 +32,40 @@ function Roles() {
 }
 
 function StickyBody() {
+  const [{ data, loading, error }, refetch] = useAxios<RolPublic[]>(
+    `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/public`
+  );
+
+  let roles: RolPublic[] = [];
+  useEffect(() => {
+    if (data) roles = data;
+  }, []);
+
   return (
     <div className={styles.sticky_body}>
       <h1>Selecciona los Roles que te correspondan</h1>
       <div className={styles.container_cards_roles}>
         <SimpleCard
           background_color={"#ffffffbf"}
-          height={"40%"}
+          height={"100%"}
           width={"30%"}
           align_items={""}
           justify_content={"center"}
         >
           <div className={styles.container_roles}>
-            {roles.map((role) => (
-              <CheckBox>{role}</CheckBox>
-            ))}
-          </div>
-        </SimpleCard>
+            <CheckBox disabled={true} defaultChecked={true}>
+              Usuario
+            </CheckBox>
 
-        <SimpleCard
-          background_color={"#ffffffbf"}
-          height={"40%"}
-          width={"30%"}
-          align_items={""}
-          justify_content={"center"}
-        >
-          <div className={styles.container_roles}>
             {roles.map((role) => (
-              <CheckBox>{role}</CheckBox>
+              <CheckBox key={role.id}>{role.nombre}</CheckBox>
             ))}
           </div>
-        </SimpleCard>
-        <SimpleCard
-          background_color={"#ffffffbf"}
-          height={"40%"}
-          width={"30%"}
-          align_items={""}
-          justify_content={"center"}
-        >
-          <div className={styles.container_roles}>
-            {roles.map((role) => (
-              <CheckBox>{role}</CheckBox>
-            ))}
-          </div>
+          {roles.length != 0 ? (
+            <></>
+          ) : (
+            <h1 className={styles.error}>No hay roles seleccionables</h1>
+          )}
         </SimpleCard>
       </div>
 
