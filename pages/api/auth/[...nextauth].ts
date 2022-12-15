@@ -24,8 +24,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }) {
       token.userRole = "admin";
+ 
       if (account?.accessToken) {
-        token.accessToken = account.accessToken;
+        token.access_token = account.access_token;
       }
       return token;
     },

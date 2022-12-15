@@ -26,10 +26,10 @@ function Login() {
 
   useEffect(()=>{
     if(session){
-      if(data.exist){
-        router.push(`/user/home`)
+      if(data && data.exist){
+        // router.push(`/user/home`)
       }else{
-        router.push(`/user/roles`)
+        // router.push(`/user/roles`)
       }
     }
   })
