@@ -10,10 +10,16 @@ import useAxios from "../../hook/useAxios";
 
 function Login() {
   const { data, error, loading } = useAxios({
-    url: `${process.env.DATABASE_URL}/api/user/exist`,
+    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist`,
   });
 
-  // console.log(data);
+  fetch(`${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist`)
+  .then((res) => res.json())
+  .then((data) => {
+    // console.log(data)
+  })
+
+  console.log(data);
 
   return (
     <div className={styles.container}>
