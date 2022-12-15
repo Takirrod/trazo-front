@@ -4,6 +4,8 @@ import StickyNotesDefault from "../../views/sticky_notes_general";
 import ModalBase from "../../components/modal/modal";
 import InputNormal from "../../components/input/inputNormal";
 import { useRouter } from "next/router";
+import { TrazoHome } from "../../types/Trazos";
+import useAxios from "axios-hooks";
 
 const customStyles = {
   content: {
@@ -22,8 +24,23 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const pagePostsLimit = 6;
   const [showModal, setShowModal] = useState(false);
-  let router= useRouter()
+  let router = useRouter();
 
+  let token = "";
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token") || "";
+  }
+  // const token = !!window ? window.localStorage.getItem("token") : ""
+
+  const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>({
+    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo/home`,
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return (
     <StickyNotesDefault
@@ -32,7 +49,7 @@ function Home() {
       }
       tittlePage="Mis Trazos"
       isButton={true}
-      onClickAddButton={() => router.push('/add/mi_trazo')}
+      onClickAddButton={() => router.push("/add/mi_trazo")}
       stickyNotes={trazos}
     />
   );
