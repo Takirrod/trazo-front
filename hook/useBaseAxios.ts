@@ -60,7 +60,7 @@ function useBaseAxios<Data>(param1: string | Config<Data>, param2: Config<Data> 
         if (isMounted.current) {
           dispatch({ type: 'REQUEST_SUCCESS', payload: res.data });
         }
-      } catch (e: any) {
+      } catch (e:any) {
         if (isMounted.current) {
           dispatch({ type: 'REQUEST_FAILED', payload: e });
         }
@@ -80,4 +80,3 @@ function useBaseAxios<Data>(param1: string | Config<Data>, param2: Config<Data> 
 }
 
 export default useBaseAxios;
-

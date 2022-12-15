@@ -6,20 +6,31 @@ import SimpleCard from "../../components/card/simpleCard";
 import GoogleButton from "react-google-button";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import useAxios from "../../hook/useAxios";
+import useAxios from "axios-hooks";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 function Login() {
-  const { data, error, loading } = useAxios({
-    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist`,
-  });
+  const { data: session, status } = useSession();
+  const router = useRouter()
 
-  fetch(`${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist`)
-  .then((res) => res.json())
-  .then((data) => {
-    // console.log(data)
+  const [{ data, loading, error }, refetch] = useAxios(
+    `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist?email=${session?.user?.email}`
+  );
+
+  useEffect(()=>{
+    if(session){
+      if(data.exist){
+        router.push(`/user/home`)
+      }else{
+        router.push(`/user/roles`)
+      }
+    }
   })
 
-  console.log(data);
+  // console.log(data);
+
+  // console.log(data);
 
   return (
     <div className={styles.container}>
@@ -39,8 +50,6 @@ function LeftLogin() {
 }
 
 function RigthLogin() {
-  const { data: session, status } = useSession();
-  const loading = status === "loading";
 
   // console.log(session);
 
@@ -57,7 +66,7 @@ function RigthLogin() {
             e.preventDefault();
             signIn(
               "google",
-              { callbackUrl: "http://localhost:3001/user/roles" },//TODO: cambiar callbackUrl
+              { callbackUrl: "http://localhost:3001/auth/login" }, //TODO: cambiar callbackUrl
               { prompt: "login" }
             );
           }}
