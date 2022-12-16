@@ -35,7 +35,7 @@ function ProgressBar({
   } else {
     const trazo = stepsNumber as TrazoHome;
 
-    currentStep = trazo.pasoActual;
+    currentStep = currentStep >= 0 ? trazo.pasoActual : 0;
 
     for (let i = 0; i < trazo.cantidadPasos; i++) {
       steps.push({
@@ -61,7 +61,7 @@ function ProgressBar({
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
       wrapperClass={styles.wrapper}
-      startingStep={currentStep- 1}
+      startingStep={currentStep}
       onSubmit={onFormSubmit}
       steps={steps}
     />
