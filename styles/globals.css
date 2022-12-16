@@ -7,6 +7,10 @@
   --secondary: #ffbb30;
   --secondaryAccent: #e68c1b;
   --border_size: 10%;
+
+
+  --error: #ff0000;
+  --success: #00ff00;
 }
 
 body {

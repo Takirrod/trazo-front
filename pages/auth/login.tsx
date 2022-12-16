@@ -20,23 +20,61 @@ function Login() {
     params: {
       email: session?.user!.email,
     },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN || ""}`,
+    },
   });
+
+  const [, login] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/auth/login`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN || ""}`,
+      },
+    },
+    { manual: true }
+  );
+
+  // fetch getYTData
+
+  // console.log(dataToken);
+
+  const loginUser = async () => {
+    const data = await login({
+      data: {
+        email: session?.user!.email,
+      },
+    });
+
+    // console.log(data);
+
+    localStorage.setItem("token", data.data.token);
+    localStorage.setItem("id_user", data.data.idUsuario.toString());
+    localStorage.setItem("id_rol", JSON.stringify(data.data.roles));
+
+    router.push("/user/home");
+  };
 
   useEffect(() => {
     if (session) {
-      if (data && data.existe) {
-        const roles:number[] = [];
+      if (data && data.existe && !error) {
+        const roles: number[] = [];
         data.rol.forEach((rol: any) => {
           roles.push(rol.id);
         });
-        localStorage.setItem("id_user", data.idUsuario.toString());
-        localStorage.setItem("id_rol", JSON.stringify(roles));
-        router.push(`/user/home`);
-      } else {
+
+        setTimeout(() => {
+          loginUser();
+        }, 500);
+        // router.push(`/user/home`);
+      } else if (data && !data.existe && !error) {
         router.push(`/user/roles`);
       }
     }
-  });
+  }, [data]);
 
   // console.log(data);
 

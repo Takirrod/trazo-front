@@ -154,3 +154,15 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
+
+
+.container_is_public{
+  width: 100%;
+  margin:  0 auto;
+  text-align: center;
+  /* background-color: aliceblue; */
+  display: flex;
+  justify-content: center;
+
+  /* gap: 1em; */
+}
