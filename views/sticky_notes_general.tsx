@@ -28,6 +28,7 @@ interface LayoutProps {
   modalAddButton?: React.ReactNode;
   onClickAddButton?: () => void;
   stickyNotes: TrazoGuardado[]| TrazoHome[]; // TODO: cambiar por el tipo de dato correcto
+  onClickSitickyCard?: (trazo:TrazoGuardado| TrazoHome) => void;
 }
 
 function StickyNotesDefault({
@@ -36,6 +37,7 @@ function StickyNotesDefault({
   modalAddButton = <></>,
   onClickAddButton = () => {},
   stickyNotes = [],
+  onClickSitickyCard = () => {},
 }: LayoutProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const pagePostsLimit = 6;
@@ -70,7 +72,7 @@ function StickyNotesDefault({
             .map((trazo) => (
               <StickyCard
               
-                OnClick={() => router.push("/user/trazado")}
+                OnClick={() => onClickSitickyCard(trazo)}
                 background_color={randomColor({
                   luminosity: "light",
                   hue: "random",

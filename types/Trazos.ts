@@ -7,7 +7,12 @@ export type TrazoHome = {
   cantidadPasos: number;
   pasoActual: number;
   nombrePasos: string[];
+  estaTerminado?: boolean;
+  idUsuario?: number;
+  idRol?: number;
 };
+
+
 
 export type TrazoCreate = {
   nombre: string;
@@ -35,6 +40,7 @@ export type TrazoGuardado = {
   nombre: string;
   id: number;
   descripcion: string;
-  numeroPasos: number;
+  numeroPasos?: number;
   nombrePasos: string[];
 }
+
