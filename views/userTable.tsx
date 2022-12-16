@@ -7,129 +7,90 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import IconButtonNoEfect from "../components/button/iconButtonNoEffect";
 import IconEdit from "../components/icons/edit";
 import IconDelete from "../components/icons/delete";
+import useAxios from "axios-hooks";
+import { User } from "../types/UserRegister";
 
-type Person = {
-  usuario: string;
-  correo: string;
-  acciones: boolean;
-};
-
-const defaultData: Person[] = [
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-  {
-    usuario: "tanner",
-    correo: "linsley",
-    acciones: true,
-  },
-];
-
-const columnHelper = createColumnHelper<Person>();
-
-const columns = [
-  columnHelper.accessor("usuario", {
-    id: "usuario",
-    cell: (info) => info.getValue(),
-    header: () => <span>Usuario</span>,
-
-    // footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor((row) => row.correo, {
-    id: "correo",
-    cell: (info) => <i>{info.getValue()}</i>,
-    header: () => <span>Correo</span>,
-    // footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("acciones", {
-    id: "acciones",
-    header: () => <span>Acciones</span>,
-    cell: (info) => (
-      <span className={styles.actions_table}>
-        <IconButtonNoEfect
-          tooltip="Editar"
-          icon={
-            <IconEdit
-              width={"1em"}
-              height={"1em"}
-              //   color={"white"}
-            />
-          }
-          onClick={() => console.log("editar")}
-        />
-        <IconButtonNoEfect
-          tooltip="Eliminar"
-          icon={
-            <IconDelete
-              width={"1em"}
-              height={"1em"}
-              //   color={"white"}
-            />
-          }
-          onClick={() => console.log("editar")}
-        />
-      </span>
-    ),
-    // footer: (info) => info.column.id,
-  }),
-];
 function UsersTable() {
-  const [data, setData] = useState(() => [...defaultData]);
+  const dataTemp: User[] = [];
+
+  const [data, setData] = useState(() => [...dataTemp]);
   const rerender = useReducer(() => ({}), {})[1];
+  let token = "";
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token") || "";
+  }
+
+  const [{ data: dataRoles, loading, error }, refetch] = useAxios<User[]>({
+    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/all`,
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  useEffect(() => {
+    if (dataRoles) {
+      setData(() => [...dataRoles]);
+    }
+  }, [dataRoles]);
+
+  const columnHelper = createColumnHelper<User>();
+
+  const columns = [
+    columnHelper.accessor((row) => row.nombre, {
+      id: "usuario",
+      cell: (info) => info.getValue(),
+      header: () => <span>Usuario</span>,
+
+      // footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor((row) => row.email, {
+      id: "correo",
+      cell: (info) => <i>{info.getValue()}</i>,
+      header: () => <span>Correo</span>,
+      // footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor((row) => row.id, {
+      id: "acciones",
+      header: () => <span>Acciones</span>,
+      cell: (info) => (
+        <span className={styles.actions_table}>
+          <IconButtonNoEfect
+            tooltip="Editar"
+            icon={
+              <IconEdit
+                width={"1em"}
+                height={"1em"}
+                //   color={"white"}
+              />
+            }
+            onClick={() => console.log("editar")}
+          />
+          <IconButtonNoEfect
+            tooltip="Eliminar"
+            icon={
+              <IconDelete
+                width={"1em"}
+                height={"1em"}
+                //   color={"white"}
+              />
+            }
+            onClick={() => console.log("editar")}
+          />
+        </span>
+      ),
+      // footer: (info) => info.column.id,
+    }),
+  ];
 
   const table = useReactTable({
     data,
@@ -137,7 +98,6 @@ function UsersTable() {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-
 
     initialState: { pagination: { pageIndex: 0, pageSize: 8 } },
   });

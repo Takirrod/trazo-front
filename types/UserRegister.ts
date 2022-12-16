@@ -11,7 +11,17 @@ export type UserRegister = {
 };
 
 export type UserRegisterRes = {
-    token: string,
-    idUsuario: number,
-    roles: number[]
-  };
+  token: string;
+  idUsuario: number;
+  roles: number[];
+};
+
+export type User = {
+  id: number;
+  email: string;
+  usuario: string;
+  nombre: string;
+  apellido: string;
+  activo: boolean;
+  urlPerfil: string;
+};
