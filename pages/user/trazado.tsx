@@ -13,9 +13,11 @@ const roles = ["Estudiante", "Profesor", "Secretario"];
 function Roles() {
   return (
     <div className={styles.container}>
-      <Layout navbar={<NavbarAdmin/>}>
+      <Layout navbar={<NavbarAdmin />}>
         <div className={styles.container_sticky_card}>
-        <ProgressBar/>
+          <div className={styles.containerprogressbar}>
+            <ProgressBar />
+          </div>
 
           <StickyCard
             childHeader={<></>}
@@ -25,8 +27,7 @@ function Roles() {
           />
           <div className={styles.button_container}>
             <Link href={"/user/home"}>
-            <SimpleButton type="button" btnText="Continuar"/>
-            
+              <SimpleButton type="button" btnText="Continuar" />
             </Link>
           </div>
         </div>
@@ -39,11 +40,7 @@ function StickyBody() {
   return (
     <div className={styles.sticky_body}>
       <h1>Practica Profesional de ...</h1>
-      <div className={styles.container_cards_roles}>
-   
-      </div>
-
- 
+      <div className={styles.container_cards_roles}></div>
     </div>
   );
 }

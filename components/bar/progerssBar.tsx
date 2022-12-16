@@ -55,6 +55,13 @@ function ProgressBar() {
           content: <></>,
           validator: step3Validator,
         },
+        {
+          label: "",
+          subtitle: "",
+          name: "",
+          content: <></>,
+          validator: step3Validator,
+        },
       ]}
     />
   );

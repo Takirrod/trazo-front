@@ -3,12 +3,22 @@
 }
 
 .step {
-    width: 5em;
+    width: 100%;
+
+    min-width: 5em;
     /* background-color: #f1f1f1; */
+    /* overflow: scroll; */
+
+    user-select: contain;
 }
 
 .wrapper {
+    /* position: absolute; */
+    max-width: 24em;
     padding: 0;
+ 
+    padding-top: 1em;
+    overflow: scroll;
     /* background-color: blue; */
     margin: 0;
 }

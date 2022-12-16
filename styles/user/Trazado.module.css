@@ -52,3 +52,10 @@
   /* background-color: aqua; */
   /* padding: 1em; */
 }
+
+.containerprogressbar{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

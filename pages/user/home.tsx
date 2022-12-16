@@ -4,7 +4,7 @@ import StickyNotesDefault from "../../views/sticky_notes_general";
 import ModalBase from "../../components/modal/modal";
 import InputNormal from "../../components/input/inputNormal";
 import { useRouter } from "next/router";
-import { TrazoHome } from "../../types/Trazos";
+import { TrazoCreate, TrazoHome } from "../../types/Trazos";
 import useAxios from "axios-hooks";
 
 const customStyles = {
@@ -41,6 +41,24 @@ function Home() {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  // const trazo: TrazoCreate = {
+  //   nombre: "Trazo 1",
+  //   descripcion: "Descripcion del trazo 1",
+  //   cantidadPasos: 2,
+  //   estaTerminado: false;
+  // }
+
+  // const [] = useAxios({
+  //   url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo`,
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  //   data: {
+  //   }
+  // });
 
   return (
     <StickyNotesDefault
