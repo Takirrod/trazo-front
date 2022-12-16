@@ -61,15 +61,24 @@ function Home() {
   // });
 
   return (
-    <StickyNotesDefault
-      modalAddButton={
-        <ModalAddButton showModal={showModal} setShowModal={setShowModal} />
-      }
-      tittlePage="Mis Trazos"
-      isButton={true}
-      onClickAddButton={() => router.push("/add/mi_trazo")}
-      stickyNotes={trazos}
-    />
+    <>
+    {
+      loading ? (
+        <div>Loading...</div>
+      ) : (
+        <StickyNotesDefault
+        modalAddButton={
+          <ModalAddButton showModal={showModal} setShowModal={setShowModal} />
+        }
+        tittlePage="Mis Trazos"
+        isButton={true}
+        onClickAddButton={() => router.push("/add/mi_trazo")}
+        stickyNotes={data!}
+      />
+      )
+    }
+    </>
+
   );
   // return <Navbar/>
 }

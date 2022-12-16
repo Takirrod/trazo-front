@@ -29,3 +29,12 @@ export type TrazoCreate = {
     }
   ];
 };
+
+
+export type TrazoGuardado = {
+  nombre: string;
+  id: number;
+  descripcion: string;
+  numeroPasos: number;
+  nombrePasos: string[];
+}

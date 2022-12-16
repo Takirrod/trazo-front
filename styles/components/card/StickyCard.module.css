@@ -4,7 +4,7 @@
 
   display: grid;
   grid:
-    "header" 5%
+    "header" 7%
     "main" 1fr
     "footer" 20%
     / 1fr;
@@ -21,6 +21,8 @@
   grid-area: header;
   background-color: rgba(0, 0, 0, 0.118);
   display: flex;
+  font-size: small;
+  font-weight: bold;
 }
 .main {
   grid-area: main;

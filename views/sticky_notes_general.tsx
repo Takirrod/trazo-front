@@ -15,6 +15,7 @@ import Input from "../components/input/input";
 import ModalBase from "../components/modal/modal";
 import ProgressBar from "../components/bar/progerssBar";
 import { useRouter } from "next/router";
+import { TrazoGuardado, TrazoHome } from "../types/Trazos";
 
 // ReactModal.setAppElement("#main");
 
@@ -26,7 +27,7 @@ interface LayoutProps {
   tittlePage?: string;
   modalAddButton?: React.ReactNode;
   onClickAddButton?: () => void;
-  stickyNotes: Array<any>; // TODO: cambiar por el tipo de dato correcto
+  stickyNotes: TrazoGuardado[]| TrazoHome[]; // TODO: cambiar por el tipo de dato correcto
 }
 
 function StickyNotesDefault({
@@ -74,9 +75,9 @@ function StickyNotesDefault({
                   luminosity: "light",
                   hue: "random",
                 })}
-                key={trazo}
-                childHeader={<></>} //For Sticky Note
-                childBody={<></>}
+                key={trazo.id}
+                childHeader={<>{trazo.nombre}</>} //For Sticky Note
+                childBody={<>{trazo.descripcion}</>}
                 childFooter={<ProgressBar />}
                 align_items={"center"}
                 justify_content={"center"}
