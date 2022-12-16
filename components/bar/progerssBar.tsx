@@ -3,11 +3,47 @@ import StepProgressBar from "react-step-progress";
 // import the stylesheet
 import "react-step-progress/dist/index.css";
 import styles from "../../styles/components/bar/ProgressBar.module.css";
+import { TrazoGuardado, TrazoHome } from "../../types/Trazos";
 
 // setup the step content
 
-function ProgressBar() {
-  // setup step validators, will be called before proceeding to the next step
+function ProgressBar({
+  stepsNumber,
+}: {
+  stepsNumber: TrazoGuardado | TrazoHome;
+}) {
+  // get type of stepsNumber
+  const stepsNumberType = typeof stepsNumber;
+
+  const isTrazoGuardado =
+    stepsNumberType === "object" && stepsNumber.hasOwnProperty("numeroPasos");
+
+  const steps = [];
+
+  if (isTrazoGuardado) {
+    const trazo = stepsNumber as TrazoGuardado;
+
+    for (let i = 0; i < trazo!.numeroPasos!; i++) {
+      steps.push({
+        label: "",
+        subtitle: "",
+        name: "",
+        content: <></>,
+      });
+    }
+  } else {
+    const trazo = stepsNumber as TrazoHome;
+
+    for (let i = 0; i < trazo.cantidadPasos; i++) {
+      steps.push({
+        label: "",
+        subtitle: "",
+        name: "",
+        content: <></>,
+      });
+    }
+  }
+
   function step2Validator() {
     // return a boolean
     return false;
@@ -34,35 +70,7 @@ function ProgressBar() {
       wrapperClass={styles.wrapper}
       startingStep={0}
       onSubmit={onFormSubmit}
-      steps={[
-        {
-          label: "",
-          subtitle: "",
-          name: "",
-          content: <></>,
-        },
-        {
-          label: "",
-          subtitle: "",
-          name: "",
-          content: <></>,
-          validator: step2Validator,
-        },
-        {
-          label: "",
-          subtitle: "",
-          name: "",
-          content: <></>,
-          validator: step3Validator,
-        },
-        {
-          label: "",
-          subtitle: "",
-          name: "",
-          content: <></>,
-          validator: step3Validator,
-        },
-      ]}
+      steps={steps}
     />
   );
 }

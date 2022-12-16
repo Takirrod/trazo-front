@@ -80,7 +80,7 @@ function StickyNotesDefault({
                 key={trazo.id}
                 childHeader={<>{trazo.nombre}</>} //For Sticky Note
                 childBody={<>{trazo.descripcion}</>}
-                childFooter={<ProgressBar />}
+                childFooter={<ProgressBar  stepsNumber={trazo}/>}
                 align_items={"center"}
                 justify_content={"center"}
               />

@@ -12,27 +12,31 @@ import { useRouter } from "next/router";
 
 function Login() {
   const { data: session, status } = useSession();
-  const router = useRouter()
+  const router = useRouter();
 
-  const [{ data, loading, error }, refetch] = useAxios(
-    `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist?email=${session?.user?.email}`
-  );
+  const [{ data, loading, error }, refetch] = useAxios({
+    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/exist`,
+    method: "GET",
+    params: {
+      email: session?.user!.email,
+    },
+  });
 
-  const [{ data: dataToken }] = useAxios(
-    `/api/getYTData`
-  );
-
-  console.log(dataToken);
-
-  useEffect(()=>{
-    if(session){
-      if(data && data.exist){
-        router.push(`/user/home`)
-      }else{
-        router.push(`/user/roles`)
+  useEffect(() => {
+    if (session) {
+      if (data && data.existe) {
+        const roles:number[] = [];
+        data.rol.forEach((rol: any) => {
+          roles.push(rol.id);
+        });
+        localStorage.setItem("id_user", data.idUsuario.toString());
+        localStorage.setItem("id_rol", JSON.stringify(roles));
+        router.push(`/user/home`);
+      } else {
+        router.push(`/user/roles`);
       }
     }
-  })
+  });
 
   // console.log(data);
 
@@ -56,7 +60,6 @@ function LeftLogin() {
 }
 
 function RigthLogin() {
-
   // console.log(session);
 
   // console.log(status);
