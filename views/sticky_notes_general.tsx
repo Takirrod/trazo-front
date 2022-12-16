@@ -27,8 +27,8 @@ interface LayoutProps {
   tittlePage?: string;
   modalAddButton?: React.ReactNode;
   onClickAddButton?: () => void;
-  stickyNotes: TrazoGuardado[]| TrazoHome[]; // TODO: cambiar por el tipo de dato correcto
-  onClickSitickyCard?: (trazo:TrazoGuardado| TrazoHome) => void;
+  stickyNotes: TrazoGuardado[] | TrazoHome[]; // TODO: cambiar por el tipo de dato correcto
+  onClickSitickyCard?: (trazo: TrazoGuardado | TrazoHome) => void;
 }
 
 function StickyNotesDefault({
@@ -71,7 +71,6 @@ function StickyNotesDefault({
             )
             .map((trazo) => (
               <StickyCard
-              
                 OnClick={() => onClickSitickyCard(trazo)}
                 background_color={randomColor({
                   luminosity: "light",
@@ -80,7 +79,7 @@ function StickyNotesDefault({
                 key={trazo.id}
                 childHeader={<>{trazo.nombre}</>} //For Sticky Note
                 childBody={<>{trazo.descripcion}</>}
-                childFooter={<ProgressBar  stepsNumber={trazo}/>}
+                childFooter={<ProgressBar stepsNumber={trazo} />}
                 align_items={"center"}
                 justify_content={"center"}
               />
