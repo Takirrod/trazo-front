@@ -103,98 +103,111 @@ function UsersTable() {
   });
 
   return (
-    <div className={styles.container_table_pagination}>
-      <table className={styles.table}>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+    <>
+      {loading ? (
+        <div>Cargando...</div>
+      ) : (
+        <div className={styles.container_table_pagination}>
+          <table className={styles.table}>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
                       )}
-                </th>
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+            </tbody>
+            <tfoot>
+              {table.getFooterGroups().map((footerGroup) => (
+                <tr key={footerGroup.id}>
+                  {footerGroup.headers.map((header) => (
+                    <th key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.footer,
+                            header.getContext()
+                          )}
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
-      <div className={styles.container_pagination}>
-        <button
-          className="buttonP"
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
-        <button
-          className="border rounded p-1"
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </button>
-        Page
-        <strong>
-          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-        </strong>
-        | Go to page:
-        <input
-          type="number"
-          defaultValue={table.getState().pagination.pageIndex + 1}
-          onChange={(e) => {
-            const page = e.target.value ? Number(e.target.value) - 1 : 0;
-            table.setPageIndex(page);
-          }}
-          className="border p-1 rounded w-16"
-        />
-      </div>
-      {/* <div>{table.getRowModel().rows.length} Rows</div> */}
-    </div>
+            </tfoot>
+          </table>
+
+          {data.length > 8 && (
+            <div className={styles.container_pagination}>
+              <button
+                className="buttonP"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<<"}
+              </button>
+              <button
+                className="border rounded p-1"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                {"<"}
+              </button>
+              <button
+                className="border rounded p-1"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                {">"}
+              </button>
+              <button
+                className="border rounded p-1"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                {">>"}
+              </button>
+              Page
+              <strong>
+                {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount()}
+              </strong>
+              | Go to page:
+              <input
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+                className="border p-1 rounded w-16"
+              />
+            </div>
+          )}
+          {/* <div>{table.getRowModel().rows.length} Rows</div> */}
+        </div>
+      )}
+    </>
   );
 }
 
