@@ -1,10 +1,15 @@
 import useAxios from "axios-hooks";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { TrazoCreate, TrazoGuardado, TrazoHome } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
+import styles from "../../styles/user/Home.module.css";
 
 export default function MiTrazo() {
   let token = "";
   let id = 0;
+
+  const router = useRouter();
 
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
@@ -34,13 +39,19 @@ export default function MiTrazo() {
     { manual: true }
   );
 
-  function updateData(trazo: TrazoGuardado) {
-    postAsignTrazo({
+  async function updateData(trazo: TrazoGuardado) {
+   await postAsignTrazo({
       data: dataNewTrazo(trazo),
     });
+
+    // goto user/home
+    router.prefetch("/user/home");
+
+
+    router.replace("/user/home");
   }
 
-  function dataNewTrazo(trazo: TrazoGuardado ): TrazoCreate {
+  function dataNewTrazo(trazo: TrazoGuardado): TrazoCreate {
     return {
       nombre: trazo.nombre,
       descripcion: trazo.descripcion,
@@ -69,11 +80,16 @@ export default function MiTrazo() {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <StickyNotesDefault
-          onClickSitickyCard={(trazo) => updateData( trazo)}
-          stickyNotes={data!}
-          tittlePage="Trazos Disponibles"
-        />
+        // <Link className={styles.link} href={"/user/home"}>
+          <StickyNotesDefault
+            onClickSitickyCard={(trazo) => {
+              updateData(trazo);
+              // router.push("/user/home", undefined, { shallow: true });
+            }}
+            stickyNotes={data!}
+            tittlePage="Trazos Disponibles"
+          />
+        // </Link>
       )}
     </>
   );
