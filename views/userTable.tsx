@@ -17,7 +17,7 @@ import IconDelete from "../components/icons/delete";
 import useAxios from "axios-hooks";
 import { User } from "../types/UserRegister";
 import ModalBase from "../components/modal/modal";
-import { Rol } from "../types/Rol";
+import { ActualizarRols, Rol } from "../types/Rol";
 import CheckBox from "../components/input/checkbox";
 
 function UsersTable() {
@@ -42,6 +42,8 @@ function UsersTable() {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  const [id, setId] = useState(0);
 
   const [{ data: dataRoles, loading, error }, refetch] = useAxios<User[]>({
     url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/all`,
@@ -68,12 +70,21 @@ function UsersTable() {
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/user/${userID}`,
     });
   };
+  let roles: Rol[] = [];
 
   useEffect(() => {
     if (dataRoles) {
       setData(() => [...dataRoles]);
     }
   }, [dataRoles]);
+  useEffect(() => {
+    if (dataRolesAll) {
+      roles = dataRolesAll || [];
+      roles.forEach((role) => {
+        setCheckBoxes((prevState) => [...prevState, false]);
+      });
+    }
+  }, [dataRolesAll]);
 
   const columnHelper = createColumnHelper<User>();
 
@@ -106,6 +117,7 @@ function UsersTable() {
               />
             }
             onClick={() => {
+              setId(info.getValue());
               getRoles({ userID: info.getValue() });
               setModal(true);
             }}
@@ -153,6 +165,8 @@ function UsersTable() {
       ) : (
         <div className={styles.container_table_pagination}>
           <ModalUser
+            id={id}
+            token={token}
             setShowModal={setModal}
             showModal={modal}
             dataUserRols={dataRolesAll || rolesTemp}
@@ -272,6 +286,8 @@ function ModalUser({
   setCheckBoxes,
   loading,
   dataRolesSelectUser,
+  token,
+  id,
 }: {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -280,14 +296,50 @@ function ModalUser({
   setCheckBoxes: React.Dispatch<React.SetStateAction<boolean[]>>;
   loading: boolean;
   dataRolesSelectUser: Rol[];
+  token: string;
+  id: number;
 }) {
+  const [, actualizaRol] = useAxios<ActualizarRols>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol_usuario/update`,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token || ""}`,
+      },
+    },
+    { manual: true }
+  );
+  const registerNewUser = async () => {
+    const data = await actualizaRol({
+      data: setNewRoles(),
+    });
+
+    // console.log(data);
+  };
+
+  function setNewRoles(): ActualizarRols {
+    let rolesChecked: number[] = [
+      ...checkboxes
+        .map((value, index) => (value ? dataUserRols![index].id : 0))
+        .filter((value) => value != 0),
+    ];
+    return {
+      idUsuario: id,
+      roles: rolesChecked,
+    };
+  }
+
   return (
     <ModalBase
       txtButton="Guardar"
       showModal={showModal}
       setShowModal={setShowModal}
       textTittle="Editar Roles de Usuario"
-      onClickCrear={() => console.log("crear")}
+      onClickCrear={() => {
+        registerNewUser();
+        setShowModal(false);
+      }}
     >
       <div className={styles.container_roles}>
         {!loading ? (
@@ -302,7 +354,13 @@ function ModalUser({
                 newCheckBoxes[index] = !newCheckBoxes[index];
                 setCheckBoxes(newCheckBoxes);
               }}
-              defaultChecked={checkIfitHasRol(dataRolesSelectUser, role)}
+              defaultChecked={checkIfitHasRol(
+                dataRolesSelectUser,
+                role,
+                setCheckBoxes,
+                checkboxes,
+                index
+              )}
             >
               {role.nombre}
             </CheckBox>
@@ -315,11 +373,21 @@ function ModalUser({
   );
 }
 
-function checkIfitHasRol(roles: Rol[], rol: Rol): boolean {
+function checkIfitHasRol(
+  roles: Rol[],
+  rol: Rol,
+  setCheckBoxes: React.Dispatch<React.SetStateAction<boolean[]>>,
+  checkBoxes: boolean[],
+  index: number
+): boolean {
   let hasRol: boolean = false;
   roles.forEach((role) => {
     if (role.id === rol.id) {
       hasRol = true;
+      // set checkbox index to true
+      let newCheckBoxes = checkBoxes;
+      newCheckBoxes[index] = true;
+      setCheckBoxes(newCheckBoxes);
     }
   });
   return hasRol;

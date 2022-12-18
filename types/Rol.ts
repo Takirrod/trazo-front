@@ -5,3 +5,8 @@ export type Rol = {
   descripcion: string;
   esPublico: boolean;
 };
+
+export type ActualizarRols ={
+  idUsuario: number,
+  roles: number[]
+}
