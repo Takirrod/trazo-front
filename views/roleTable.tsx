@@ -26,7 +26,15 @@ type Person = {
   acciones: boolean;
 };
 
-function RoleTable() {
+function RoleTable({
+  dataRoles,
+  loading,
+  refetch
+}: {
+  dataRoles: Rol[];
+  loading: boolean;
+  refetch: () => void;
+}) {
   const dataTemp: Rol[] = [];
 
   const [modal, setModal] = useState(false);
@@ -39,15 +47,6 @@ function RoleTable() {
     token = localStorage.getItem("token") || "";
   }
   const [isChecked, setIsChecked] = useState(false);
-
-  const [{ data: dataRoles, loading, error }, refetch] = useAxios<Rol[]>({
-    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
 
   const [, deleteRol] = useAxios(
     {
@@ -351,7 +350,7 @@ function ModalRole({
       txtButton="Guardar"
       showModal={showModal}
       setShowModal={setShowModal}
-      textTittle="Editar Roles"
+      textTittle="Editar Rol"
       onClickCrear={() => {
         // registerNewUser();
         setShowModal(false);
