@@ -18,6 +18,9 @@ function InProcess() {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  },
+  {
+    useCache: false
   });
 
   return (

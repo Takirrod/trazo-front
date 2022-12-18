@@ -9,16 +9,21 @@ export default function Finished() {
     token = localStorage.getItem("token") || "";
   }
 
-  const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>({
-    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo/admin`,
-    params: {
-      terminados: true,
+  const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo/admin`,
+      params: {
+        terminados: true,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    {
+      useCache: false,
+    }
+  );
 
   return (
     <>

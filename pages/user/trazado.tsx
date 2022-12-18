@@ -37,31 +37,43 @@ function Roles() {
     { useCache: false }
   );
 
-  return (
-    <div className={styles.container}>
-      <Layout navbar={<NavbarAdmin />}>
-        <div className={styles.container_sticky_card}>
-          <div className={styles.containerprogressbar}>
-            <ProgressBarOnlyNumber
-              stepsNumber={data?.cantidadPasos || 1}
-              currentStep={data?.pasoActual || 1}
-            />
-          </div>
+  const stepNumber = query.step ? parseInt(query.step as string) - 1 : 0;
 
-          <StickyCard
-            childHeader={<h1>{data?.nombre}</h1>}
-            childBody={<StickyBody description={data?.descripcion || ""} />}
-            align_items={"center"}
-            justify_content={"center"}
-          />
-          <div className={styles.button_container}>
-            <Link href={"/user/home"}>
-              <SimpleButton type="button" btnText="Continuar" />
-            </Link>
-          </div>
+  return (
+    <>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div className={styles.container}>
+          <Layout navbar={<NavbarAdmin />}>
+            <div className={styles.container_sticky_card}>
+              <div className={styles.containerprogressbar}>
+                <ProgressBarOnlyNumber
+                  stepsNumber={data?.cantidadPasos || 1}
+                  currentStep={data?.pasoActual || 1}
+                />
+              </div>
+
+              <StickyCard
+                childHeader={<h1>{data?.paso[stepNumber].nombre}</h1>}
+                childBody={
+                  <StickyBody
+                    description={data?.paso[stepNumber].descripcion || ""}
+                  />
+                }
+                align_items={"center"}
+                justify_content={"center"}
+              />
+              <div className={styles.button_container}>
+                <Link href={"/user/home"}>
+                  <SimpleButton type="button" btnText="Continuar" />
+                </Link>
+              </div>
+            </div>
+          </Layout>
         </div>
-      </Layout>
-    </div>
+      )}
+    </>
   );
 }
 
