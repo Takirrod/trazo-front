@@ -5,6 +5,8 @@ import Input from "../../components/input/input";
 import InputNormal from "../../components/input/inputNormal";
 import ModalBase from "../../components/modal/modal";
 import { TrazoGuardado } from "../../types/Trazos";
+import FormCreateRole from "../../views/formCreateRol";
+import FormNewTrazo from "../../views/formNewTrazo";
 import StickyNotesDefault from "../../views/sticky_notes_general";
 
 const customStyles = {
@@ -67,15 +69,16 @@ function ModalAddButton({
 
   return (
     <ModalBase
+      showButton={false}
       txtButton="Crear"
       showModal={showModal}
       setShowModal={setShowModal}
       textTittle="Agregar Trazo"
       onClickCrear={() => {
-        router.push("/add/trazo?paso=1");
+ 
       }}
     >
-      <InputNormal id="trazo_name" labelText="Nombre del Trazo" />
+      <FormNewTrazo router={router} setShowModal={setShowModal} />
       {/* <Input labelText="Nombre del Paso"/> */}
     </ModalBase>
   );
