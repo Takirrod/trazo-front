@@ -49,6 +49,28 @@ function RoleTable() {
     },
   });
 
+  const [, deleteRol] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/delete`,
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token || ""}`,
+      },
+    },
+    { manual: true }
+  );
+
+  const delRol = async (id: number) => {
+    const data = await deleteRol({
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/delete/${id}`,
+    });
+
+    // console.log(data);
+
+    refetch();
+  };
+
   useEffect(() => {
     if (dataRoles) {
       setData(() => [...dataRoles]);
@@ -138,7 +160,9 @@ function RoleTable() {
                   //   color={"white"}
                 />
               }
-              onClick={() => console.log("editar")}
+              onClick={() => {
+                delRol(info.getValue().id);
+              }}
             />
           )}
         </span>
