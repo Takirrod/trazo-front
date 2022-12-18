@@ -70,7 +70,7 @@ export default function MiTrazo() {
       estaTerminado: false,
       pasoActual: 1,
       idUsuario: id,
-      idRol: 1, //TODO ask takis
+      idRol: id, //TODO ask takis
       paso: pasos,
     };
   }
