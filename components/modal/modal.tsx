@@ -16,6 +16,7 @@ interface LayoutProps {
   showModal: boolean;
   txtButton?: string;
   onClickCrear: () => void;
+  showButton?: boolean;
 }
 
 export default function ModalBase({
@@ -24,9 +25,11 @@ export default function ModalBase({
   showModal,
   setShowModal,
   txtButton = "Guardar",
-  onClickCrear
+  onClickCrear,
+  showButton = true,
 }: LayoutProps) {
   //   const [showModal, setShowModal] = useState(false);
+
 
   return (
     <>
@@ -79,7 +82,13 @@ export default function ModalBase({
           </div>
           <div className={styles.container_modal_footer}>
             {/* <button>Crear</button> */}
-            <SimpleButton type="submit" onClick={onClickCrear} btnText={txtButton} />
+            {showButton && (
+              <SimpleButton
+                type="submit"
+                onClick={onClickCrear}
+                btnText={txtButton}
+              />
+            )}
           </div>
         </div>
       </ReactModal>

@@ -4,12 +4,23 @@ interface LayoutProps {
   btnText: string;
   onClick?: () => void;
   type: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-export default function SimpleButton({ btnText, onClick, type }: LayoutProps) {
+export default function SimpleButton({
+  btnText,
+  onClick,
+  type,
+  disabled = false,
+}: LayoutProps) {
   return (
     <>
-      <button type={type} onClick={onClick} className={styles.btn_76}>
+      <button
+        disabled={disabled}
+        type={type}
+        onClick={onClick}
+        className={styles.btn_76}
+      >
         {btnText}
       </button>
     </>

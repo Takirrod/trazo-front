@@ -16,6 +16,9 @@ import IconEdit from "../components/icons/edit";
 import IconDelete from "../components/icons/delete";
 import useAxios from "axios-hooks";
 import { Rol } from "../types/Rol";
+import CheckBox from "../components/input/checkbox";
+import ModalBase from "../components/modal/modal";
+import FormEditRole from "./formEditRole";
 
 type Person = {
   usuario: string;
@@ -26,6 +29,8 @@ type Person = {
 function RoleTable() {
   const dataTemp: Rol[] = [];
 
+  const [modal, setModal] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<Rol | null>(null);
   const [data, setData] = useState(() => [...dataTemp]);
   const rerender = useReducer(() => ({}), {})[1];
   let token = "";
@@ -33,6 +38,7 @@ function RoleTable() {
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
   }
+  const [isChecked, setIsChecked] = useState(false);
 
   const [{ data: dataRoles, loading, error }, refetch] = useAxios<Rol[]>({
     url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
@@ -99,12 +105,12 @@ function RoleTable() {
       header: () => <span>Es Publico</span>,
       // footer: (info) => info.column.id,
     }),
-    columnHelper.accessor((row) => row.id, {
+    columnHelper.accessor((row) => row, {
       id: "acciones",
       header: () => <span>Acciones</span>,
       cell: (info) => (
         <span className={styles.actions_table}>
-          {info.getValue() > 2 && (
+          {info.getValue().id > 2 && (
             <IconButtonNoEfect
               tooltip="Editar"
               icon={
@@ -114,11 +120,15 @@ function RoleTable() {
                   //   color={"white"}
                 />
               }
-              onClick={() => console.log("editar")}
+              onClick={() => {
+                setSelectedRole(info.getValue());
+                setIsChecked(info.getValue().esPublico);
+                setModal(true);
+              }}
             />
           )}
 
-          {info.getValue() > 2 && (
+          {info.getValue().id > 2 && (
             <IconButtonNoEfect
               tooltip="Eliminar"
               icon={
@@ -153,6 +163,15 @@ function RoleTable() {
         <div>Cargando...</div>
       ) : (
         <div className={styles.container_table_pagination}>
+          <ModalRole
+            refetch={refetch}
+            token={token}
+            selectedRole={selectedRole!}
+            isChecked={isChecked}
+            setIsChecked={setIsChecked}
+            showModal={modal}
+            setShowModal={setModal}
+          />
           <table className={styles.table}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -253,6 +272,79 @@ function RoleTable() {
         </div>
       )}
     </>
+  );
+}
+
+function ModalRole({
+  showModal,
+  setShowModal,
+  isChecked,
+  setIsChecked,
+  token,
+  selectedRole,
+  refetch,
+}: {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isChecked: boolean;
+  setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  token: string;
+  selectedRole: Rol;
+  refetch: () => void;
+}) {
+  const [, actualizaRol] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/update`,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token || ""}`,
+      },
+    },
+    { manual: true }
+  );
+  const updateRol = async (name: string, description: string) => {
+    const data = await actualizaRol({
+      data: setNewRoles(name, description),
+    });
+
+    // console.log(data);
+
+    refetch();
+  };
+
+  function setNewRoles(name: string, description: string): Rol {
+    return {
+      id: selectedRole.id,
+      nombre: name,
+      descripcion: description,
+      esPublico: isChecked,
+    };
+  }
+
+  return (
+    <ModalBase
+      txtButton="Guardar"
+      showModal={showModal}
+      setShowModal={setShowModal}
+      textTittle="Editar Roles"
+      onClickCrear={() => {
+        // registerNewUser();
+        setShowModal(false);
+      }}
+      showButton={false}
+    >
+      <div className={styles.container_roles}>
+        <FormEditRole
+          refetch={refetch}
+          updateRol={updateRol}
+          setShowModal={setShowModal}
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          selectedRol={selectedRole}
+        />
+      </div>
+    </ModalBase>
   );
 }
 

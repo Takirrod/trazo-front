@@ -33,10 +33,10 @@
     text-align: center;
     flex-direction: column;
     width: 100%;
-    padding: 1em;
+    /* padding: 1em; */
     /* background-color: #443e6d; */
     color: whitesmoke;
-    gap: 0.5em;
+    /* gap: 0.2em; */
   }
   
   /* label for input */
