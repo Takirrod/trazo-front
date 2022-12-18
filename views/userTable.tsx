@@ -16,17 +16,32 @@ import IconEdit from "../components/icons/edit";
 import IconDelete from "../components/icons/delete";
 import useAxios from "axios-hooks";
 import { User } from "../types/UserRegister";
+import ModalBase from "../components/modal/modal";
+import { Rol } from "../types/Rol";
+import CheckBox from "../components/input/checkbox";
 
 function UsersTable() {
   const dataTemp: User[] = [];
+  const [modal, setModal] = useState(false);
 
   const [data, setData] = useState(() => [...dataTemp]);
+  const [checkBoxes, setCheckBoxes] = useState<boolean[]>([]);
+
   const rerender = useReducer(() => ({}), {})[1];
   let token = "";
 
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
   }
+
+  const [{ data: dataRolesAll, loading: loadingRolesAll }] = useAxios<Rol[]>({
+    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const [{ data: dataRoles, loading, error }, refetch] = useAxios<User[]>({
     url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/all`,
@@ -36,6 +51,23 @@ function UsersTable() {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  const [
+    { data: dataUserRols, loading: loadingUserRol, error: errorUserRols },
+    getRolesUser,
+  ] = useAxios<Rol[]>({
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const getRoles = async ({ userID }: { userID: number }) => {
+    const data = await getRolesUser({
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/user/${userID}`,
+    });
+  };
 
   useEffect(() => {
     if (dataRoles) {
@@ -73,7 +105,10 @@ function UsersTable() {
                 //   color={"white"}
               />
             }
-            onClick={() => console.log("editar")}
+            onClick={() => {
+              getRoles({ userID: info.getValue() });
+              setModal(true);
+            }}
           />
           <IconButtonNoEfect
             tooltip="Eliminar"
@@ -102,12 +137,30 @@ function UsersTable() {
     initialState: { pagination: { pageIndex: 0, pageSize: 8 } },
   });
 
+  const rolesTemp: Rol[] = [
+    {
+      id: 0,
+      nombre: "",
+      descripcion: "",
+      esPublico: false,
+    },
+  ];
+
   return (
     <>
       {loading ? (
         <div>Cargando...</div>
       ) : (
         <div className={styles.container_table_pagination}>
+          <ModalUser
+            setShowModal={setModal}
+            showModal={modal}
+            dataUserRols={dataRolesAll || rolesTemp}
+            dataRolesSelectUser={dataUserRols || rolesTemp}
+            checkboxes={checkBoxes}
+            setCheckBoxes={setCheckBoxes}
+            loading={loadingUserRol}
+          ></ModalUser>
           <table className={styles.table}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -211,4 +264,64 @@ function UsersTable() {
   );
 }
 
+function ModalUser({
+  showModal,
+  setShowModal,
+  dataUserRols,
+  checkboxes,
+  setCheckBoxes,
+  loading,
+  dataRolesSelectUser,
+}: {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  dataUserRols: Rol[];
+  checkboxes: boolean[];
+  setCheckBoxes: React.Dispatch<React.SetStateAction<boolean[]>>;
+  loading: boolean;
+  dataRolesSelectUser: Rol[];
+}) {
+  return (
+    <ModalBase
+      txtButton="Guardar"
+      showModal={showModal}
+      setShowModal={setShowModal}
+      textTittle="Editar Roles de Usuario"
+      onClickCrear={() => console.log("crear")}
+    >
+      <div className={styles.container_roles}>
+        {!loading ? (
+          dataUserRols!.map((role, index) => (
+            // set checkbox index to true
+            <CheckBox
+              key={role.id}
+              onChange={(e: any) => {}}
+              onClick={() => {
+                // Change value of checkbox
+                let newCheckBoxes = checkboxes;
+                newCheckBoxes[index] = !newCheckBoxes[index];
+                setCheckBoxes(newCheckBoxes);
+              }}
+              defaultChecked={checkIfitHasRol(dataRolesSelectUser, role)}
+            >
+              {role.nombre}
+            </CheckBox>
+          ))
+        ) : (
+          <></>
+        )}
+      </div>
+    </ModalBase>
+  );
+}
+
+function checkIfitHasRol(roles: Rol[], rol: Rol): boolean {
+  let hasRol: boolean = false;
+  roles.forEach((role) => {
+    if (role.id === rol.id) {
+      hasRol = true;
+    }
+  });
+  return hasRol;
+}
 export default UsersTable;

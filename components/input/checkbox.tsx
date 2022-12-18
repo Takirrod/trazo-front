@@ -26,6 +26,7 @@ export default function CheckBox({
           checked={isChecked}
           disabled={disabled}
           type="checkbox"
+          defaultChecked={defaultChecked}
         />
         <div className={styles.checkmark}></div>
         <span className={styles.label}>{children}</span>
