@@ -7,44 +7,23 @@ import { TrazoGuardado, TrazoHome } from "../../types/Trazos";
 
 // setup the step content
 
-function ProgressBar({
+function ProgressBarOnlyNumber({
   stepsNumber,
+  currentStep,
 }: {
-  stepsNumber: TrazoGuardado | TrazoHome;
+  stepsNumber: number;
+  currentStep: number;
 }) {
   // get type of stepsNumber
-  const stepsNumberType = typeof stepsNumber;
-
-  const isTrazoGuardado =
-    stepsNumberType === "object" && stepsNumber.hasOwnProperty("numeroPasos");
-
   const steps = [];
-  let currentStep = 0;
 
-  if (isTrazoGuardado) {
-    const trazo = stepsNumber as TrazoGuardado;
-
-    for (let i = 0; i < trazo!.cantidadPasos!; i++) {
-      steps.push({
-        label: "",
-        subtitle: "",
-        name: "",
-        content: <></>,
-      });
-    }
-  } else {
-    const trazo = stepsNumber as TrazoHome;
-
-    currentStep = currentStep > 0 ? trazo.pasoActual -1 : 0;
-
-    for (let i = 0; i < trazo.cantidadPasos; i++) {
-      steps.push({
-        label: "",
-        subtitle: "",
-        name: "",
-        content: <></>,
-      });
-    }
+  for (let i = 0; i < stepsNumber; i++) {
+    steps.push({
+      label: "",
+      subtitle: "",
+      name: "",
+      content: <></>,
+    });
   }
 
   function onFormSubmit() {
@@ -61,11 +40,11 @@ function ProgressBar({
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
       wrapperClass={styles.wrapper}
-      startingStep={currentStep}
+      startingStep={currentStep - 1}
       onSubmit={onFormSubmit}
       steps={steps}
     />
   );
 }
 
-export default ProgressBar;
+export default ProgressBarOnlyNumber;

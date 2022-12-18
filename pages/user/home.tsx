@@ -62,6 +62,13 @@ function Home() {
           isButton={true}
           onClickAddButton={() => router.push("/add/mi_trazo")}
           stickyNotes={data!}
+          onClickSitickyCard={(trazo) => {
+            // console.log(trazo);
+            router.push({
+              pathname: "/user/trazado/",
+              query: { trazo: trazo.id, step: 1 },
+            });
+          }}
         />
       )}
     </>

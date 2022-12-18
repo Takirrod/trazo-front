@@ -40,38 +40,38 @@ export default function MiTrazo() {
   );
 
   async function updateData(trazo: TrazoGuardado) {
-   await postAsignTrazo({
+    await postAsignTrazo({
       data: dataNewTrazo(trazo),
     });
 
     // goto user/home
-    router.prefetch("/user/home");
-
+    // router.prefetch("/user/home");
 
     router.replace("/user/home");
   }
 
   function dataNewTrazo(trazo: TrazoGuardado): TrazoCreate {
+    const pasos = trazo.pasoGuardado!.map((paso) => {
+      return {
+        nombre: paso.nombre,
+        descripcion: paso.descripcion,
+        estaTerminado: false,
+        pasoNumero: paso.pasoNumero,
+        idUsuario: null,
+        idRol: paso.idRol,
+        idTrazo: paso.idTrazoGuardado,
+      };
+    });
+
     return {
       nombre: trazo.nombre,
       descripcion: trazo.descripcion,
-      cantidadPasos: trazo.numeroPasos,
+      cantidadPasos: trazo.cantidadPasos,
       estaTerminado: false,
       pasoActual: 1,
       idUsuario: id,
       idRol: 1, //TODO ask takis
-      paso: [
-        {
-          nombre: trazo.nombre,
-          descripcion: trazo.descripcion,
-          pasoNumero: 1,
-          idTrazo: trazo.id,
-          idRol: 1, //TODO ask takis
-          idUsuario: id,
-
-          estaTerminado: false,
-        },
-      ],
+      paso: pasos,
     };
   }
 
@@ -81,14 +81,14 @@ export default function MiTrazo() {
         <div>Loading...</div>
       ) : (
         // <Link className={styles.link} href={"/user/home"}>
-          <StickyNotesDefault
-            onClickSitickyCard={(trazo) => {
-              updateData(trazo);
-              // router.push("/user/home", undefined, { shallow: true });
-            }}
-            stickyNotes={data!}
-            tittlePage="Trazos Disponibles"
-          />
+        <StickyNotesDefault
+          onClickSitickyCard={(trazo) => {
+            updateData(trazo);
+            // router.push("/user/home", undefined, { shallow: true });
+          }}
+          stickyNotes={data!}
+          tittlePage="Trazos Disponibles"
+        />
         // </Link>
       )}
     </>
