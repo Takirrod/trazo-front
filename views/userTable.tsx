@@ -65,11 +65,29 @@ function UsersTable() {
     },
   });
 
+  const [, delUser] = useAxios(
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    { manual: true }
+  );
+
   const getRoles = async ({ userID }: { userID: number }) => {
     const data = await getRolesUser({
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/user/${userID}`,
     });
   };
+
+  const deleteUser = async ({ userID }: { userID: string }) => {
+    const data = await delUser({
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/${userID}`,
+    });
+  };
+
   let roles: Rol[] = [];
 
   useEffect(() => {
@@ -131,7 +149,11 @@ function UsersTable() {
                 //   color={"white"}
               />
             }
-            onClick={() => console.log("editar")}
+            onClick={() => {
+              deleteUser({ userID: info.getValue().toString() });
+              refetch();
+
+            }}
           />
         </span>
       ),
@@ -392,4 +414,5 @@ function checkIfitHasRol(
   });
   return hasRol;
 }
+
 export default UsersTable;
