@@ -45,4 +45,12 @@
     resize: none;
     font-size: x-large;
     /* padding: .5em; */
+    font-size: medium;
+    border-color: transparent;
+
+}
+
+.text_area:active{
+    outline: none;
+    border: none;
 }

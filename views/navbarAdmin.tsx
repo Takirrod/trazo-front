@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "../styles/view/Navbar.module.css";
@@ -36,6 +37,14 @@ const NavbarAdmin = () => {
             </li>
             <li>
               <Link href="/user/home"> Mis Trazos</Link>
+            </li>
+            <li onClick={(e) => {
+              e.preventDefault();
+              localStorage.removeItem("token")
+              signOut({ callbackUrl: "/" })
+
+            }}>
+              <Link href="/auth/login">Cerrar Sesion</Link>
             </li>
           </ul>
         </div>
