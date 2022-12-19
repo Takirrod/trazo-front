@@ -22,6 +22,8 @@ export default function MiTrazo() {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  }, {
+    useCache: false
   });
 
   const [

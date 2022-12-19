@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
 import styles from "../styles/view/forms/Forms.module.css";
@@ -7,7 +7,7 @@ import CheckBox from "../components/input/checkbox";
 import SimpleButton from "../components/button/simpleButtton";
 import { Rol } from "../types/Rol";
 import { NextRouter } from "next/router";
-import { Paso, TrazoCreate } from "../types/Trazos";
+import { PasoGuardado, TrazoCreate } from "../types/Trazos";
 
 // Shape of form values
 interface FormValues {
@@ -19,15 +19,16 @@ interface OtherProps {
   router: NextRouter;
   pasoActal: number;
   nameTrazo: string;
-  pasoSave: Paso[];
-  setPasoSave: React.Dispatch<React.SetStateAction<Paso[]>>;
+  pasoSave: PasoGuardado[];
   textArea: string;
   registerNewTrazo: (name: string) => void;
+  setPasoSave: React.Dispatch<React.SetStateAction<PasoGuardado[]>>;
+  setSendTrazoNew: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Aside: You may see InjectedFormikProps<OtherProps, FormValues> instead of what comes below in older code.. InjectedFormikProps was artifact of when Formik only exported a HoC. It is also less flexible as it MUST wrap all props (it passes them through).
 const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
-  const { touched, errors, isSubmitting } = props;
+  const { touched, errors, isSubmitting, pasoSave } = props;
   return (
     <Form>
       <div className={styles.container_form}>
@@ -59,24 +60,20 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
                 description: true,
               });
               if (props.values.name && props.values.description) {
-                props.setPasoSave([
-                  ...props.pasoSave,
-                  {
+
+                props.setPasoSave(
+                  props.pasoSave.concat({
                     nombre: props.values.name,
                     descripcion: props.values.description,
-                    estaTerminado: false,
                     pasoNumero: props.pasoActal,
                     idUsuario: null,
-                    idRol: 1,
-                    idTrazo: 1,
-                  },
-                ]);
-                console.log("paso actual", props.pasoActal);
+                    idRol: null,
+                    idTrazoGuardado: null,
+                  }),
+                )
 
-                setTimeout(() => {
-                  props.registerNewTrazo(props.nameTrazo);
+                props.setSendTrazoNew(true);
 
-                }, 1000);
               } else {
                 // props.
               }
@@ -97,10 +94,11 @@ interface MyFormProps {
   router: NextRouter;
   pasoActal: number;
   nameTrazo: string;
-  pasoSave: Paso[];
-  setPasoSave: React.Dispatch<React.SetStateAction<Paso[]>>;
+  pasoSave: PasoGuardado[];
   textArea: string;
   registerNewTrazo: (name: string) => void;
+  setPasoSave: React.Dispatch<React.SetStateAction<PasoGuardado[]>>;
+  setSendTrazoNew: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Wrap our form with the withFormik HoC
@@ -127,18 +125,20 @@ const FormAddTrazo = withFormik<MyFormProps, FormValues>({
   },
 
   handleSubmit: (values, { props }) => {
-    props.setPasoSave([
-      ...props.pasoSave,
-      {
+
+    // wait for setPasoSave to finish
+    props.setPasoSave(
+      props.pasoSave.concat({
         nombre: values.name,
         descripcion: values.description,
-        estaTerminado: false,
         pasoNumero: props.pasoActal,
         idUsuario: null,
-        idRol: 1,
-        idTrazo: 1,
-      },
-    ]);
+        idRol: null,
+        idTrazoGuardado: null,
+      }),
+    )
+
+    // useEffect(() => {
     const nextStep = props.pasoActal + 1;
 
     props.router.push({
@@ -146,8 +146,18 @@ const FormAddTrazo = withFormik<MyFormProps, FormValues>({
       query: { paso: nextStep, name: props.nameTrazo },
     });
 
+
     values.name = "";
     values.description = "";
+
+    //   console.log(props.pasoSave);
+    // }, [props.pasoSave])
+    // console.log(props.pasoSave);
+
+
+
+
+
   },
 })(InnerForm);
 

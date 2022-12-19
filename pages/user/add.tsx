@@ -36,7 +36,7 @@ export default function Add() {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  },{
+  }, {
     useCache: false
   });
 
@@ -77,7 +77,7 @@ function ModalAddButton({
       setShowModal={setShowModal}
       textTittle="Agregar Trazo"
       onClickCrear={() => {
- 
+
       }}
     >
       <FormNewTrazo router={router} setShowModal={setShowModal} />

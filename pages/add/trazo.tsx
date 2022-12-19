@@ -5,7 +5,7 @@ import StickyCard from "../../components/card/stickyCard";
 import Layout from "../../components/layout/layout";
 import LeftRigth from "../../components/layout/leftRigth";
 import styles from "../../styles/add/AddTrazo.module.css";
-import { Paso, TrazoCreate, TrazoGuardado } from "../../types/Trazos";
+import { PasoGuardado, TrazoCreate, TrazoGuardado, TrazoGuardadoCreate } from "../../types/Trazos";
 import FormAddTrazo from "../../views/formAddTrazo";
 import NavbarAdmin from "../../views/navbarAdmin";
 import { MentionsInput, Mention } from 'react-mentions'
@@ -57,6 +57,8 @@ function LeftSection({
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  }, {
+    useCache: false
   });
 
   const [users, setUsers] = useState<User[]>([])
@@ -119,12 +121,13 @@ function RightSection({ textArea }: { textArea: string }) {
   const { paso } = query;
   const { name } = query;
   const pasoActual = parseInt(paso?.toString() || "1");
-  const temp: Paso[] = [];
-  const [pasoSave, setPasoSave] = useState(temp);
+  const pasoSave: PasoGuardado[] = [];
+  const [pasoGuardado, setPasoGuardado] = useState<PasoGuardado[]>([]);
+  const [sendTrazoNew, setSendTrazoNew] = useState(false);
 
   const [, newTrazo] = useAxios(
     {
-      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo`,
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -138,26 +141,29 @@ function RightSection({ textArea }: { textArea: string }) {
     const data = await newTrazo({
       data: setUser(name),
     });
-
-
     router.push("/user/add");
+
+
   };
 
-  function setUser(name: string): TrazoCreate {
+  function setUser(name: string): TrazoGuardadoCreate {
 
     return {
       nombre: name,
-      cantidadPasos: pasoSave.length,
       descripcion: "",
-      estaTerminado: false,
-      pasoActual: 1,
-      idUsuario: null,
-      idRol: null,
-      paso: pasoSave,
-
-
+      pasoGuardado: pasoGuardado,
     };
   }
+
+  useEffect(() => {
+    // console.log(pasoGuardado);
+  }, [pasoGuardado]);
+
+  useEffect(() => {
+    if (sendTrazoNew) {
+      registerNewTrazo(name?.toString() || "");
+    }
+  }, [sendTrazoNew]);
 
 
   return (
@@ -167,10 +173,12 @@ function RightSection({ textArea }: { textArea: string }) {
         pasoActal={pasoActual}
         nameTrazo={name?.toString() || ""}
         textArea={textArea}
-        pasoSave={pasoSave}
-        setPasoSave={setPasoSave}
-        registerNewTrazo ={registerNewTrazo}
+        pasoSave={pasoGuardado}
+        setPasoSave={setPasoGuardado}
+        registerNewTrazo={registerNewTrazo}
+        setSendTrazoNew={setSendTrazoNew}
       />
+
     </div>
   );
 }

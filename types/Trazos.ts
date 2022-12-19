@@ -20,25 +20,43 @@ export type TrazoCreate = {
   pasoActual?: number;
   idUsuario: number | null;
   idRol: number | null;
-  paso: {
-    nombre: string;
-    descripcion: string;
-    estaTerminado: boolean;
-    pasoNumero: number;
-    idUsuario: number | null;
-    idRol: number;
-    idTrazo: number;
-  }[] | Paso[];
+  paso:
+    | {
+        nombre: string;
+        descripcion: string;
+        estaTerminado: boolean;
+        pasoNumero: number;
+        idUsuario: number | null;
+        idRol: number;
+        idTrazo: number;
+      }[]
+    | PasoGuardado[];
 };
 
-export type Paso = {
+export type TrazoGuardadoCreate = {
+  nombre: string;
+  cantidadPasos?: number;
+  descripcion: string;
+
+  pasoGuardado:
+    | {
+        nombre: string;
+        descripcion: string;
+        pasoNumero: number;
+        idUsuario: number | null;
+        idRol: number | null;
+        idTrazoGuardado: number;
+      }[]
+    | PasoGuardado[];
+};
+
+export type PasoGuardado = {
   nombre: string;
   descripcion: string;
-  estaTerminado: boolean;
   pasoNumero: number;
   idUsuario: number | null;
-  idRol: number| null;
-  idTrazo: number;
+  idRol: number | null;
+  idTrazoGuardado: number | null;
 };
 
 export type TrazoGuardado = {
