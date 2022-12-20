@@ -69,6 +69,7 @@ export type TrazoGuardado = {
     nombre: string;
     descripcion: string;
     pasoNumero: number;
+    idUsuario: number;
     idRol: number;
     idTrazoGuardado: number;
   }[];

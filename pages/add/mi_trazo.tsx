@@ -59,7 +59,7 @@ export default function MiTrazo() {
         descripcion: paso.descripcion,
         estaTerminado: false,
         pasoNumero: paso.pasoNumero,
-        idUsuario: null,
+        idUsuario: paso.idUsuario,
         idRol: paso.idRol,
         idTrazo: paso.idTrazoGuardado,
       };

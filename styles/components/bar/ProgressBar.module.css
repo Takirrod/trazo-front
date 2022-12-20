@@ -12,6 +12,20 @@
     user-select: contain;
 }
 
+.wrapper_full li span {
+    background-color: var(--succesBar) !important;
+}
+
+.wrapper_full {
+    max-width: 24em;
+    padding: 0;
+ 
+    padding-top: 1em;
+    overflow: scroll;
+    /* background-color: blue; */
+    margin: 0;
+}
+
 .wrapper {
     /* position: absolute; */
     max-width: 24em;
@@ -21,4 +35,8 @@
     overflow: scroll;
     /* background-color: blue; */
     margin: 0;
+}
+
+.content {
+    /* background-color: aqua; */
 }

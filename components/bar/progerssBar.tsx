@@ -14,6 +14,7 @@ function ProgressBar({
 }) {
   // get type of stepsNumber
   const stepsNumberType = typeof stepsNumber;
+  let terminado = false
 
   const isTrazoGuardado =
     stepsNumberType === "object" && stepsNumber.hasOwnProperty("numeroPasos");
@@ -35,7 +36,11 @@ function ProgressBar({
   } else {
     const trazo = stepsNumber as TrazoHome;
 
-    currentStep = currentStep > 0 ? trazo.pasoActual -1 : 0;
+    currentStep = trazo.pasoActual > 0 ? trazo.pasoActual - 1 : 0;
+
+    terminado = trazo.estaTerminado!
+
+
 
     for (let i = 0; i < trazo.cantidadPasos; i++) {
       steps.push({
@@ -55,12 +60,14 @@ function ProgressBar({
 
   // render the progress bar
 
+
+
   return (
     <StepProgressBar
       primaryBtnClass={styles.button}
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
-      wrapperClass={styles.wrapper}
+      wrapperClass={terminado ? styles.wrapper_full : styles.wrapper}
       startingStep={currentStep}
       onSubmit={onFormSubmit}
       steps={steps}

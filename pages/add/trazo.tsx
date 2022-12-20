@@ -198,7 +198,7 @@ function RightSection({
   }
 
   useEffect(() => {
-    console.log(pasoGuardado);
+    // console.log(pasoGuardado);
     setTextArea("");
   }, [pasoGuardado]);
 

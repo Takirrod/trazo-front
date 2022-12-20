@@ -10,9 +10,11 @@ import { TrazoGuardado, TrazoHome } from "../../types/Trazos";
 function ProgressBarOnlyNumber({
   stepsNumber,
   currentStep,
+  terminado
 }: {
   stepsNumber: number;
   currentStep: number;
+  terminado: boolean;
 }) {
   // get type of stepsNumber
   const steps = [];
@@ -39,10 +41,11 @@ function ProgressBarOnlyNumber({
       primaryBtnClass={styles.button}
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
-      wrapperClass={styles.wrapper}
+      wrapperClass={terminado ? styles.wrapper_full : styles.wrapper}
       startingStep={currentStep - 1}
       onSubmit={onFormSubmit}
       steps={steps}
+      contentClass={styles.content}
     />
   );
 }

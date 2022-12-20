@@ -1,6 +1,7 @@
 import useAxios from "axios-hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ProgressBar from "../../components/bar/progerssBar";
 import ProgressBarOnlyNumber from "../../components/bar/progerssBarOnlyNumber";
 import SimpleButton from "../../components/button/simpleButtton";
@@ -18,12 +19,21 @@ function Roles() {
   const { query } = useRouter();
 
   let token = "";
+  let id = "";
+  let roles = "";
 
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
+    id = localStorage.getItem("id_user") || "";
+    roles = localStorage.getItem("id_rol") || "";
   }
 
   // get query param
+
+  // console.log(id)
+  // console.log(JSON.parse(roles))
+
+  const router = useRouter();
 
   const [{ data, loading, error }, refetch] = useAxios<Trazo>(
     {
@@ -37,7 +47,48 @@ function Roles() {
     { useCache: false }
   );
 
+  const [, updatePaso] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/paso`,
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    { manual: true }
+  );
+
+  const nextStep = async () => {
+    const dataNewStep = await updatePaso({
+      data: {
+        id: data?.paso[stepNumber].id,
+        estaTerminado: true,
+        idTrazo: data?.id,
+        pasoNumero: stepNumber + 1,
+      },
+    });
+
+    if (data!.paso.length > stepNumber + 1) {
+      // console.log(data?.paso.length, stepNumber + 1);
+      router.push({ pathname: "/user/trazado", query: { trazo: query.trazo, step: stepNumber + 2 } })
+    } else {
+      router.push("/user/home")
+    }
+  };
+
+
   const stepNumber = query.step ? parseInt(query.step as string) - 1 : 0;
+
+  const [disableButton, setDisableButton] = useState(false);
+
+  // if data.paso[stepNumber].idUsuario is not equal to id disable button
+  useEffect(() => {
+    if ((data?.paso[stepNumber].idUsuario !== data?.idUsuario) || data?.paso[stepNumber].estaTerminado) {
+      setDisableButton(true)
+    }
+  }, [loading])
+
 
   return (
     <>
@@ -51,6 +102,7 @@ function Roles() {
                 <ProgressBarOnlyNumber
                   stepsNumber={data?.cantidadPasos || 1}
                   currentStep={data?.pasoActual || 1}
+                  terminado={data?.estaTerminado || false}
                 />
               </div>
 
@@ -65,9 +117,7 @@ function Roles() {
                 justify_content={"center"}
               />
               <div className={styles.button_container}>
-                <Link href={"/user/home"}>
-                  <SimpleButton type="button" btnText="Continuar" />
-                </Link>
+                <SimpleButton disabled={disableButton} onClick={() => { nextStep() }} type="button" btnText="Continuar" />
               </div>
             </div>
           </Layout>

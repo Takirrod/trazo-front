@@ -12,6 +12,8 @@
 
   --error: #ff0000;
   --success: #00ff00;
+
+  --succesBar: #4db193;
 }
 
 body {
