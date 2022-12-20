@@ -26,15 +26,16 @@ function SearchBar({}) {
     }
   };
   return (
-    <input
-      className={styles.input}
-      onChange={onChange}
-      id="search-bar"
-      type="search"
-      name="search"
-      value={query}
-      placeholder="Buscar..."
-    />
+    // <input
+    //   className={styles.input}
+    //   onChange={onChange}
+    //   id="search-bar"
+    //   type="search"
+    //   name="search"
+    //   value={query}
+    //   placeholder="Buscar..." //TODO: SEARCH
+    // />
+    <></>
   );
 }
 
