@@ -28,7 +28,13 @@ function Roles() {
     roles = localStorage.getItem("id_rol") || "";
   }
 
-  const rolesNumber: number[] = JSON.parse(roles);
+  let rolesNumber: number[] = []
+
+  useEffect(() => {
+    if (roles) {
+       rolesNumber = JSON.parse(roles);
+    }
+  }, [roles]);
 
   // get query param
 
