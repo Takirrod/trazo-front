@@ -64,25 +64,7 @@ function Login() {
         const roles: number[] = [];
         data.rol.forEach((rol: any) => {
           roles.push(rol.id);
-        });
-
-        setTimeout(() => {
-          loginUser();
-        }, 500);
-        // router.push(`/user/home`);
-      } else if (data && !data.existe && !error) {
-        router.push(`/user/roles`);
-      }
-    }
-  }, [data]);
-
-  // console.log(data);
-
-  // console.log(data);
-
-  return (
-    <div className={styles.container}>
-      <Layout>
+www
         <LeftRigth child1={<LeftLogin />} child2={<RigthLogin />} />
         {/* <iframe src="/api/getYTData" /> */}
       </Layout>

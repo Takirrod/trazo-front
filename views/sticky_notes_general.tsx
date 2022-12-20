@@ -1,7 +1,7 @@
 import styles from "../styles/user/Home.module.css";
 import { Pagination } from "react-pagination-bar";
 import "react-pagination-bar/dist/index.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import randomColor from "randomcolor";
 import Layout from "../components/layout/layout";
 import SearchBar from "../components/input/searchbar";
@@ -35,18 +35,32 @@ function StickyNotesDefault({
   isButton = false,
   tittlePage = "Trazos",
   modalAddButton = <></>,
-  onClickAddButton = () => {},
+  onClickAddButton = () => { },
   stickyNotes = [],
-  onClickSitickyCard = () => {},
+  onClickSitickyCard = () => { },
 }: LayoutProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const pagePostsLimit = 6;
   const router = useRouter();
 
+  let roles = "";
+
+  if (typeof window !== "undefined") {
+    roles = localStorage.getItem("id_rol") || "";
+  }
+
+  const [rolesNumber, setRolesNumber] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (roles) {
+      setRolesNumber(JSON.parse(roles));
+    }
+  }, [roles]);
+
   return (
     <div className={styles.container}>
       <Layout
-        navbar={<NavbarAdmin />}
+        navbar={rolesNumber.includes(1) ? <NavbarAdmin /> : <Navbar />}
         childrenheader={
           isButton ? (
             <IconButtonHeader
