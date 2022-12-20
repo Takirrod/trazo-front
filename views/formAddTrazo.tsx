@@ -11,6 +11,7 @@ import { PasoGuardado, TrazoCreate } from "../types/Trazos";
 import DatalistInput, { useComboboxControls } from 'react-datalist-input';
 import 'react-datalist-input/dist/styles.css';
 import { User } from "../types/UserRegister";
+import { RolPublic } from "../types/RolPublic";
 
 // Shape of form values
 interface FormValues {
@@ -30,7 +31,11 @@ interface OtherProps {
   setPasoSave: React.Dispatch<React.SetStateAction<PasoGuardado[]>>;
   setSendTrazoNew: React.Dispatch<React.SetStateAction<boolean>>;
   dataUsersAll: User[];
+  dataRolesAll: RolPublic[]
 
+
+  isRol: boolean
+  setIsRol: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Aside: You may see InjectedFormikProps<OtherProps, FormValues> instead of what comes below in older code.. InjectedFormikProps was artifact of when Formik only exported a HoC. It is also less flexible as it MUST wrap all props (it passes them through).
@@ -48,8 +53,14 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
         />
         {touched.name && errors.name && <div>{errors.name}</div>}
 
+        <CheckBox isChecked={props.isRol} onClick={() => {
+          props.setIsRol(!props.isRol)
+        }}>Rol/Public</CheckBox>
 
-        <InputSuggestions props={props} data={props.dataUsersAll} />
+        {!props.isRol && <InputSuggestions props={props} data={props.dataUsersAll} />}
+
+        {props.isRol && <InputSuggestionsRoles props={props} data={props.dataRolesAll} />}
+
         {touched.description && errors.description && (
           <div>{errors.description}</div>
         )}
@@ -65,16 +76,30 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
               });
               if (props.values.name && props.values.description) {
 
-                props.setPasoSave(
-                  props.pasoSave.concat({
-                    nombre: props.values.name,
-                    descripcion: props.textArea,
-                    pasoNumero: props.pasoActal,
-                    idUsuario: parseInt(props.values.description),
-                    idRol: null,
-                    idTrazoGuardado: null,
-                  }),
-                )
+                if (!props.isRol) {
+
+                  props.setPasoSave(
+                    props.pasoSave.concat({
+                      nombre: props.values.name,
+                      descripcion: props.textArea,
+                      pasoNumero: props.pasoActal,
+                      idUsuario: parseInt(props.values.description),
+                      idRol: null,
+                      idTrazoGuardado: null,
+                    }),
+                  )
+                } else {
+                  props.setPasoSave(
+                    props.pasoSave.concat({
+                      nombre: props.values.name,
+                      descripcion: props.textArea,
+                      pasoNumero: props.pasoActal,
+                      idUsuario: null,
+                      idRol: parseInt(props.values.description),
+                      idTrazoGuardado: null,
+                    }),
+                  )
+                }
 
                 props.setSendTrazoNew(true);
 
@@ -94,6 +119,36 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
 };
 
 
+function InputSuggestionsRoles({ data, props }: { data: RolPublic[], props: OtherProps & FormikProps<FormValues> }) {
+  const newData = data.map((item) => {
+    return {
+      id: item.id,
+      value: item.nombre,
+    }
+  })
+
+  const { setValue, value } = useComboboxControls({ isExpanded: true });
+
+  useEffect(() => {
+    setValue("")
+  }, [props.isSubmitting])
+
+
+  return (
+    <DatalistInput
+      value={value}
+      setValue={setValue}
+      placeholder="Seleccionar Rol"
+      label="Seleccionar Rol"
+      onSelect={(item) => {
+        props.values.description = item.id
+        // setValue("")
+
+
+      }}
+      items={newData}
+    />)
+}
 
 function InputSuggestions({ data, props }: { data: User[], props: OtherProps & FormikProps<FormValues> }) {
   const newData = data.map((item) => {
@@ -114,8 +169,8 @@ function InputSuggestions({ data, props }: { data: User[], props: OtherProps & F
     <DatalistInput
       value={value}
       setValue={setValue}
-      placeholder="Seleccionar Rol/Persona"
-      label="Seleccionar Rol/Persona"
+      placeholder="Seleccionar Persona"
+      label="Seleccionar Persona"
       onSelect={(item) => {
         props.values.description = item.id
         // setValue("")
@@ -138,6 +193,10 @@ interface MyFormProps {
   setPasoSave: React.Dispatch<React.SetStateAction<PasoGuardado[]>>;
   setSendTrazoNew: React.Dispatch<React.SetStateAction<boolean>>;
   dataUsersAll: User[];
+  dataRolesAll: RolPublic[]
+
+  isRol: boolean
+  setIsRol: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Wrap our form with the withFormik HoC
@@ -166,16 +225,29 @@ const FormAddTrazo = withFormik<MyFormProps, FormValues>({
   handleSubmit: (values, { props }) => {
 
     // wait for setPasoSave to finish
-    props.setPasoSave(
-      props.pasoSave.concat({
-        nombre: values.name,
-        descripcion: props.textArea,
-        pasoNumero: props.pasoActal,
-        idUsuario: parseInt(values.description),
-        idRol: null,
-        idTrazoGuardado: null,
-      }),
-    )
+    if (!props.isRol) {
+      props.setPasoSave(
+        props.pasoSave.concat({
+          nombre: values.name,
+          descripcion: props.textArea,
+          pasoNumero: props.pasoActal,
+          idUsuario: parseInt(values.description),
+          idRol: null,
+          idTrazoGuardado: null,
+        }),
+      )
+    } else {
+      props.setPasoSave(
+        props.pasoSave.concat({
+          nombre: values.name,
+          descripcion: props.textArea,
+          pasoNumero: props.pasoActal,
+          idUsuario: null,
+          idRol: parseInt(values.description),
+          idTrazoGuardado: null,
+        }),
+      )
+    }
 
     // useEffect(() => {
     const nextStep = props.pasoActal + 1;

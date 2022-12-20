@@ -17,6 +17,7 @@ import { MentionsInput, Mention } from "react-mentions";
 import useAxios from "axios-hooks";
 import { Rol } from "../../types/Rol";
 import { User } from "../../types/UserRegister";
+import { RolPublic } from "../../types/RolPublic";
 
 export default function AddTrazo() {
   let token = "";
@@ -46,6 +47,20 @@ export default function AddTrazo() {
     }
   );
 
+  const [{ data:dataRoles, loading:loadingRoles, error:errorRoles }, refetchRoles] = useAxios<RolPublic[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      useCache: false,
+    }
+  );
+
   return (
     <div className={styles.container}>
       <Layout navbar={<NavbarAdmin />}>
@@ -57,6 +72,8 @@ export default function AddTrazo() {
               textMention={textMention}
               setTextMention={setTextMention}
               colorTextArea={randomColorTextArea}
+              dataRoles={dataRoles!}
+              loadingroles={loadingRoles}
               setTextArea={setTextArea}
             />
           }
@@ -66,6 +83,9 @@ export default function AddTrazo() {
               loadingUsers={loading}
               dataUsers={data!}
               textArea={textMention}
+              dataRoles={dataRoles!}
+              loadingroles={loadingRoles}
+
             />
           }
         />
@@ -81,6 +101,8 @@ function LeftSection({
   textMention,
   dataUsers,
   loading,
+  dataRoles,
+  loadingroles,
 }: {
   setTextArea: React.Dispatch<React.SetStateAction<string>>;
   setTextMention: React.Dispatch<React.SetStateAction<string>>;
@@ -88,8 +110,11 @@ function LeftSection({
   textMention: string;
   dataUsers: User[];
   loading: boolean;
+  dataRoles: RolPublic[];
+  loadingroles: boolean;
 }) {
   const [users, setUsers] = useState<{ id: number; display: string }[]>([]);
+  const [roles, setRoles] = useState<{ id: number; display: string }[]>([]);
 
   useEffect(() => {
     if (dataUsers) {
@@ -99,12 +124,20 @@ function LeftSection({
     }
   }, [dataUsers]);
 
+  useEffect(() => {
+    if (dataRoles) {
+      dataUsers.map((user) => {
+        setRoles((prev) => [...prev, { id: user.id, display: user.nombre }]);
+      });
+    }
+  }, [dataRoles]);
+
   return (
     <div className={styles.left_container}>
       <div className={styles.tittle_left}>
         <h1>Crear Trazo</h1>
       </div>
-      {loading ? (
+      {loading || loadingroles ? (
         <p>Loading...</p>
       ) : (
         <div className={styles.left_sticky}>
@@ -124,7 +157,7 @@ function LeftSection({
                 >
                   <Mention
                     trigger="@"
-                    data={[]}
+                    data={roles}
                   // renderSuggestion={this.renderUserSuggestion}
                   />
                   <Mention
@@ -149,11 +182,15 @@ function RightSection({
   textArea,
   dataUsers,
   loadingUsers,
+  dataRoles,
+  loadingroles,
 }: {
   setTextArea: React.Dispatch<React.SetStateAction<string>>;
   textArea: string;
   dataUsers: User[];
   loadingUsers: boolean;
+  dataRoles: RolPublic[];
+  loadingroles: boolean;
 }) {
   let token = "";
 
@@ -197,8 +234,10 @@ function RightSection({
     };
   }
 
+  const [isRol, setIsRol] = useState(false);
+
   useEffect(() => {
-    // console.log(pasoGuardado);
+    console.log(pasoGuardado);
     setTextArea("");
   }, [pasoGuardado]);
 
@@ -211,7 +250,7 @@ function RightSection({
 
   return (
     <div className={styles.right_container}>
-      {loadingUsers ? (
+      {loadingUsers || loadingroles ? (
         <p>Loading...</p>
       ) : (
         <FormAddTrazo
@@ -225,6 +264,10 @@ function RightSection({
           setPasoSave={setPasoGuardado}
           registerNewTrazo={registerNewTrazo}
           setSendTrazoNew={setSendTrazoNew}
+
+          dataRolesAll={dataRoles}
+          isRol={isRol}
+          setIsRol={setIsRol}
         />
       )}
     </div>
