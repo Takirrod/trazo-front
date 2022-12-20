@@ -64,7 +64,25 @@ function Login() {
         const roles: number[] = [];
         data.rol.forEach((rol: any) => {
           roles.push(rol.id);
-www
+        });
+
+        setTimeout(() => {
+          loginUser();
+        }, 500);
+        // router.push(`/user/home`);
+      } else if (data && !data.existe && !error) {
+        router.push(`/user/roles`);
+      }
+    }
+  }, [data]);
+
+  // console.log(data);
+
+  // console.log(data);
+
+  return (
+    <div className={styles.container}>
+      <Layout>
         <LeftRigth child1={<LeftLogin />} child2={<RigthLogin />} />
         {/* <iframe src="/api/getYTData" /> */}
       </Layout>
@@ -95,7 +113,7 @@ function RigthLogin() {
             e.preventDefault();
             signIn(
               "google",
-              { callbackUrl: "/auth/login" }, 
+              { callbackUrl: "/auth/login" }, //TODO: cambiar callbackUrl
               { prompt: "login" }
             );
           }}
