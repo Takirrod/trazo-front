@@ -4,12 +4,20 @@ import { useRouter } from "next/router";
 import { TrazoCreate, TrazoGuardado, TrazoHome } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
 import styles from "../../styles/user/Home.module.css";
+import { useEffect, useState } from "react";
 
 export default function MiTrazo() {
   let token = "";
   let id = 0;
 
+
   const router = useRouter();
+
+
+
+
+ 
+
 
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";

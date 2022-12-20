@@ -25,6 +25,28 @@ export default function AddTrazo() {
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
   }
+  const router = useRouter();
+
+
+
+  let roles = "";
+
+  if (typeof window !== "undefined") {
+    roles = localStorage.getItem("id_rol") || "";
+  }
+
+  const [rolesNumber, setRolesNumber] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (roles) {
+      setRolesNumber(JSON.parse(roles));
+    }
+  }, [roles]);
+  useEffect(() => {
+    if (rolesNumber && !rolesNumber.includes(1)) {
+      router.push("/user/home");
+    }
+  }, [rolesNumber]);
 
   const [textArea, setTextArea] = useState("");
   const [textMention, setTextMention] = useState("");

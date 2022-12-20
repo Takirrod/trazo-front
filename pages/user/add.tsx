@@ -1,6 +1,6 @@
 import useAxios from "axios-hooks";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../../components/input/input";
 import InputNormal from "../../components/input/inputNormal";
 import ModalBase from "../../components/modal/modal";
@@ -30,6 +30,29 @@ export default function Add() {
     token = localStorage.getItem("token") || "";
   }
 
+
+  const router = useRouter();
+
+
+
+  let roles = "";
+
+  if (typeof window !== "undefined") {
+    roles = localStorage.getItem("id_rol") || "";
+  }
+
+  const [rolesNumber, setRolesNumber] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (roles) {
+      setRolesNumber(JSON.parse(roles));
+    }
+  }, [roles]);
+  useEffect(() => {
+    if (rolesNumber && !rolesNumber.includes(1)) {
+      router.push("/user/home");
+    }
+  }, [rolesNumber]);
   const [{ data, loading, error }, refetch] = useAxios<TrazoGuardado[]>({
     url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado/all`,
     headers: {

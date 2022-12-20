@@ -11,6 +11,7 @@ import CheckBox from "../../components/input/checkbox";
 import Layout from "../../components/layout/layout";
 import styles from "../../styles/user/Trazado.module.css";
 import { Trazo, TrazoHome, TrazoPasos } from "../../types/Trazos";
+import Navbar from "../../views/navbar";
 import NavbarAdmin from "../../views/navbarAdmin";
 
 const roles = ["Estudiante", "Profesor", "Secretario"];
@@ -32,7 +33,7 @@ function Roles() {
 
   useEffect(() => {
     if (roles) {
-       rolesNumber = JSON.parse(roles);
+      rolesNumber = JSON.parse(roles);
     }
   }, [roles]);
 
@@ -117,7 +118,7 @@ function Roles() {
         <h1>Loading...</h1>
       ) : (
         <div className={styles.container}>
-          <Layout navbar={<NavbarAdmin />}>
+          <Layout navbar={rolesNumber.includes(1) ? <NavbarAdmin /> : <Navbar />}>
             <div className={styles.container_sticky_card}>
               <div className={styles.containerprogressbar}>
                 <ProgressBarOnlyNumber

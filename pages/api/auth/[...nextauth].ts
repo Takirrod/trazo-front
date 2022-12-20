@@ -20,6 +20,7 @@ export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "dark",
   },
+  secret: process.env.NEXTAUTH_SECRET || "",
 
   callbacks: {
     async jwt({ token, user, account, profile, isNewUser }) {
@@ -28,6 +29,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.accessToken) {
         token.access_token = account.access_token;
       }
+      
       return token;
     },
   },

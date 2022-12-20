@@ -27,7 +27,7 @@ const Navbar = () => {
           <ul>
         
             <li>
-              <Link href="/contact">Mis Trazos</Link>
+              <Link href="/user/home">Mis Trazos</Link>
             </li>
             <li onClick={(e) => {
               e.preventDefault();
