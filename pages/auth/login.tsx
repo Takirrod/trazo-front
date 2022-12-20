@@ -113,7 +113,7 @@ function RigthLogin() {
             e.preventDefault();
             signIn(
               "google",
-              { callbackUrl: "http://localhost:3001/auth/login" }, //TODO: cambiar callbackUrl
+              { callbackUrl: "/auth/login" }, 
               { prompt: "login" }
             );
           }}
