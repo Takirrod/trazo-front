@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-datalist-input": "^3.2.1",
     "react-dom": "18.2.0",
+    "react-draggable-lists": "^1.0.1",
     "react-google-button": "^0.7.2",
     "react-mentions": "^4.4.7",
     "react-modal": "^3.16.1",

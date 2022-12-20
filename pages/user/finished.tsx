@@ -28,7 +28,7 @@ export default function Finished() {
 
   useEffect(() => {
     if (rolesNumber && !rolesNumber.includes(1)) {
-      router.push("/user/home");
+      // router.push("/user/home");
     }
   }, [rolesNumber]);
   const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>(
