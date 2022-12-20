@@ -18,3 +18,63 @@
     justify-content: space-around;
     gap: 1em;
 }
+
+.input_sugestion_words{
+    background-color: aliceblue;
+    text-align: center;
+    width: 100%;
+    color: black;
+}
+
+.input_sugestion_words:hover{
+    background-color: #e6e6e6;
+    
+}
+
+.container_input input {
+    padding: 0.5em 0.75em;
+    border-radius: 0.2em;
+    /* border: 1px solid var(--c-border, currentColor); */
+    color: black;
+    font-size: 1rem;
+    letter-spacing: 0.1ch;
+    width: 100%;
+  }
+  
+  
+  .input_field:invalid {
+    --c-border: rgb(230, 85, 60);
+    --c-text: rgb(230, 85, 60);
+    --c-outline: rgb(230, 85, 60);
+  }
+  
+  .input_field:is(:disabled, :read-only) {
+    --c-border: rgb(150, 150, 150);
+    --c-text: rgb(170, 170, 170);
+  }
+  
+  .input_field:is(:focus, :focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Input */
+.container_input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+    /* padding: 1em; */
+    /* background-color: #443e6d; */
+    color: whitesmoke;
+    /* gap: 0.2em; */
+    /* background-color: #e6e6e6; */
+  }
+  
+  /* label for input */
+  .container_input label{
+    font-size: 1em;
+  }
+  
