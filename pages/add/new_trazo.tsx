@@ -48,7 +48,7 @@ export default function NewTrazo() {
 
   useEffect(() => {
     if (rolesNumber && !rolesNumber.includes(1)) {
-      router.push("/user/home");
+      // router.push("/user/home");
     }
   }, [rolesNumber]);
 

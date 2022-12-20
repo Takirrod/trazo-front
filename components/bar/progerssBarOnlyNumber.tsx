@@ -41,7 +41,7 @@ function ProgressBarOnlyNumber({
       primaryBtnClass={styles.button}
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
-      wrapperClass={terminado ? styles.wrapper_full : styles.wrapper}
+      wrapperClass={terminado ? styles.wrapper_trazado_full : styles.wrapper_trazado}
       startingStep={currentStep - 1}
       onSubmit={onFormSubmit}
       steps={steps}

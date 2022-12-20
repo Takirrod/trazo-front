@@ -29,7 +29,7 @@ function Roles() {
     roles = localStorage.getItem("id_rol") || "";
   }
 
-  let rolesNumber: number[] = []
+  let rolesNumber: number[] = [];
 
   useEffect(() => {
     if (roles) {
@@ -80,37 +80,51 @@ function Roles() {
 
     if (data!.paso.length > stepNumber + 1) {
       // console.log(data?.paso.length, stepNumber + 1);
-      router.push({ pathname: "/user/trazado", query: { trazo: query.trazo, step: stepNumber + 2 } })
+      router.push({
+        pathname: "/user/trazado",
+        query: { trazo: query.trazo, step: stepNumber + 2 },
+      }, undefined, { shallow: true });
+
+      setActualStep(stepNumber + 2);
+
+      refetch();  
     } else {
-      router.push("/user/home")
+      router.push("/user/home");
     }
   };
-
-
 
   const stepNumber = query.step ? parseInt(query.step as string) - 1 : 0;
 
   const [disableButton, setDisableButton] = useState(false);
 
-  // if data.paso[stepNumber].idRol is in rolesNumber array enable button
+  const [actualStep, setActualStep] = useState(stepNumber + 1 || 1);
 
+  // if data.paso[stepNumber].idRol is in rolesNumber array enable button
 
 
   // if data.paso[stepNumber].idUsuario is not equal to id disable button
   useEffect(() => {
-    if (data?.paso[stepNumber].idUsuario && ((data?.paso[stepNumber].idUsuario !== data?.idUsuario)
-      || data?.paso[stepNumber].estaTerminado)
+    setActualStep(stepNumber + 1);
+  }, [stepNumber]);
+
+
+  useEffect(() => {
+    if (
+      data?.paso[stepNumber].idUsuario &&
+      (data?.paso[stepNumber].idUsuario !== data?.idUsuario ||
+        data?.paso[stepNumber].estaTerminado)
     ) {
-      setDisableButton(true)
+      setDisableButton(true);
     }
 
-    if (data?.paso[stepNumber].idRol && ((rolesNumber.indexOf(data?.paso[stepNumber].idRol) === -1)
-      || data?.paso[stepNumber].estaTerminado)
+    if (
+      data?.paso[stepNumber].idRol &&
+      (rolesNumber.indexOf(data?.paso[stepNumber].idRol) === -1 ||
+        data?.paso[stepNumber].estaTerminado)
     ) {
-      setDisableButton(true)
+      setDisableButton(true);
     }
-  }, [loading])
-
+  }, [loading]);
 
   return (
     <>
@@ -118,12 +132,14 @@ function Roles() {
         <h1>Loading...</h1>
       ) : (
         <div className={styles.container}>
-          <Layout navbar={rolesNumber.includes(1) ? <NavbarAdmin /> : <Navbar />}>
+          <Layout
+            navbar={rolesNumber.includes(1) ? <NavbarAdmin /> : <Navbar />}
+          >
             <div className={styles.container_sticky_card}>
               <div className={styles.containerprogressbar}>
                 <ProgressBarOnlyNumber
                   stepsNumber={data?.cantidadPasos || 1}
-                  currentStep={data?.pasoActual || 1}
+                  currentStep={actualStep}
                   terminado={data?.estaTerminado || false}
                 />
               </div>
@@ -139,7 +155,14 @@ function Roles() {
                 justify_content={"center"}
               />
               <div className={styles.button_container}>
-                <SimpleButton disabled={disableButton} onClick={() => { nextStep() }} type="button" btnText="Continuar" />
+                <SimpleButton
+                  disabled={disableButton}
+                  onClick={() => {
+                    nextStep();
+                  }}
+                  type="button"
+                  btnText="Continuar"
+                />
               </div>
             </div>
           </Layout>

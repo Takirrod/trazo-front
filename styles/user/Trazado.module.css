@@ -55,6 +55,7 @@
 
 .containerprogressbar{
   width: 100%;
+  /* background-color: aliceblue; */
   display: flex;
   justify-content: center;
   align-items: center;
