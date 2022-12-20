@@ -28,10 +28,12 @@ function Roles() {
     roles = localStorage.getItem("id_rol") || "";
   }
 
+  const rolesNumber: number[] = JSON.parse(roles);
+
   // get query param
 
   // console.log(id)
-  // console.log(JSON.parse(roles))
+  // console.log(rolesNumber)
 
   const router = useRouter();
 
@@ -78,13 +80,26 @@ function Roles() {
   };
 
 
+
   const stepNumber = query.step ? parseInt(query.step as string) - 1 : 0;
 
   const [disableButton, setDisableButton] = useState(false);
 
+  // if data.paso[stepNumber].idRol is in rolesNumber array enable button
+
+
+
   // if data.paso[stepNumber].idUsuario is not equal to id disable button
   useEffect(() => {
-    if ((data?.paso[stepNumber].idUsuario !== data?.idUsuario) || data?.paso[stepNumber].estaTerminado) {
+    if (data?.paso[stepNumber].idUsuario && ((data?.paso[stepNumber].idUsuario !== data?.idUsuario)
+      || data?.paso[stepNumber].estaTerminado)
+    ) {
+      setDisableButton(true)
+    }
+
+    if (data?.paso[stepNumber].idRol && ((rolesNumber.indexOf(data?.paso[stepNumber].idRol) === -1)
+      || data?.paso[stepNumber].estaTerminado)
+    ) {
       setDisableButton(true)
     }
   }, [loading])

@@ -4,7 +4,7 @@ import StickyNotesDefault from "../../views/sticky_notes_general";
 import ModalBase from "../../components/modal/modal";
 import InputNormal from "../../components/input/inputNormal";
 import { useRouter } from "next/router";
-import { TrazoCreate, TrazoHome } from "../../types/Trazos";
+import { TrazoCreate, TrazoGuardado, TrazoHome } from "../../types/Trazos";
 import useAxios from "axios-hooks";
 
 const customStyles = {
@@ -63,11 +63,25 @@ function Home() {
           onClickAddButton={() => router.push("/add/mi_trazo")}
           stickyNotes={data!}
           onClickSitickyCard={(trazo) => {
-            // console.log(trazo);
-            router.push({
-              pathname: "/user/trazado/",
-              query: { trazo: trazo.id, step: 1 },
-            });
+            // if type trazo home go to pasoActual
+            // if type trazo create go to paso 1
+            const stepsNumberType = typeof trazo;
+
+            if (stepsNumberType === "object" && trazo.hasOwnProperty("pasoActual")) {
+              const trazoGuardado = trazo as TrazoHome;
+
+
+              router.push({
+                pathname: "/user/trazado/",
+                query: { trazo: trazo.id, step: trazoGuardado.pasoActual },
+              });
+            }
+            else {
+              router.push({
+                pathname: "/user/trazado/",
+                query: { trazo: trazo.id, step: 1 },
+              });
+            }
           }}
         />
       )}

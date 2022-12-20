@@ -237,7 +237,7 @@ function RightSection({
   const [isRol, setIsRol] = useState(false);
 
   useEffect(() => {
-    console.log(pasoGuardado);
+    // console.log(pasoGuardado);
     setTextArea("");
   }, [pasoGuardado]);
 
