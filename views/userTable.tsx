@@ -19,6 +19,7 @@ import { User } from "../types/UserRegister";
 import ModalBase from "../components/modal/modal";
 import { ActualizarRols, Rol } from "../types/Rol";
 import CheckBox from "../components/input/checkbox";
+import Loader from "../components/loader/loader";
 
 function UsersTable() {
   const dataTemp: User[] = [];
@@ -86,7 +87,7 @@ function UsersTable() {
     const data = await delUser({
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/${userID}`,
     });
-    refetch()
+    refetch();
   };
 
   let roles: Rol[] = [];
@@ -152,8 +153,6 @@ function UsersTable() {
             }
             onClick={() => {
               deleteUser({ userID: info.getValue().toString() });
-              
-
             }}
           />
         </span>
@@ -184,7 +183,7 @@ function UsersTable() {
   return (
     <>
       {loading ? (
-        <div>Cargando...</div>
+        <Loader notAll={true} />
       ) : (
         <div className={styles.container_table_pagination}>
           <ModalUser

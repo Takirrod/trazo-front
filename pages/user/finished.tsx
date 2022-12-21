@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { TrazoHome } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
+import Loader from "../../components/loader/loader";
 
 export default function Finished() {
   let token = "";
@@ -50,7 +51,7 @@ export default function Finished() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <StickyNotesDefault
           stickyNotes={data!}

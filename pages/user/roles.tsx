@@ -12,6 +12,7 @@ import Layout from "../../components/layout/layout";
 import styles from "../../styles/user/Roles.module.css";
 import { RolPublic } from "../../types/RolPublic";
 import { UserRegister, UserRegisterRes } from "../../types/UserRegister";
+import Loader from "../../components/loader/loader";
 
 function Roles() {
   const [checkBoxes, setCheckBoxes] = useState<boolean[]>([]);
@@ -63,6 +64,8 @@ function Roles() {
     router.push("/user/home");
   };
 
+  const [loadingRegister, setLoadingRegister] = useState(false);
+
   function setUser(): UserRegister {
     let rolesChecked: number[] = [
       ...checkBoxes
@@ -98,7 +101,7 @@ function Roles() {
             justify_content={"center"}
           />
           <div className={styles.button_container}>
-            ={" "}
+            
             <SimpleButton
               onClick={() => {
                 registerNewUser();
@@ -158,13 +161,13 @@ function StickyBody({
                 </CheckBox>
               ))
             ) : (
-              <></>
+              <Loader notAll={true}/>
             )}
           </div>
         </SimpleCard>
       </div>
 
-      <h3>Si deseas otro rol a demas de estos realiza un procedimiento</h3>
+      <h3>Si deseas otro rol aparte de estos realiza un procedimiento</h3>
     </div>
   );
 }

@@ -18,6 +18,7 @@ import useAxios from "axios-hooks";
 import { Rol } from "../../types/Rol";
 import { User } from "../../types/UserRegister";
 import { RolPublic } from "../../types/RolPublic";
+import Loader from "../../components/loader/loader";
 
 export default function AddTrazo() {
   let token = "";
@@ -26,8 +27,6 @@ export default function AddTrazo() {
     token = localStorage.getItem("token") || "";
   }
   const router = useRouter();
-
-
 
   let roles = "";
 
@@ -69,7 +68,10 @@ export default function AddTrazo() {
     }
   );
 
-  const [{ data:dataRoles, loading:loadingRoles, error:errorRoles }, refetchRoles] = useAxios<RolPublic[]>(
+  const [
+    { data: dataRoles, loading: loadingRoles, error: errorRoles },
+    refetchRoles,
+  ] = useAxios<RolPublic[]>(
     {
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
       method: "GET",
@@ -107,7 +109,6 @@ export default function AddTrazo() {
               textArea={textMention}
               dataRoles={dataRoles!}
               loadingroles={loadingRoles}
-
             />
           }
         />
@@ -160,7 +161,7 @@ function LeftSection({
         <h1>Crear Trazo</h1>
       </div>
       {loading || loadingroles ? (
-        <p>Loading...</p>
+        <Loader notAll={true}/>
       ) : (
         <div className={styles.left_sticky}>
           <StickyCard
@@ -180,12 +181,12 @@ function LeftSection({
                   <Mention
                     trigger="@"
                     data={roles}
-                  // renderSuggestion={this.renderUserSuggestion}
+                    // renderSuggestion={this.renderUserSuggestion}
                   />
                   <Mention
                     trigger="#"
                     data={users}
-                  // renderSuggestion={this.renderTagSuggestion}
+                    // renderSuggestion={this.renderTagSuggestion}
                   />
                 </MentionsInput>
               </>
@@ -266,14 +267,13 @@ function RightSection({
   useEffect(() => {
     if (sendTrazoNew) {
       registerNewTrazo(name?.toString() || "");
-      
     }
   }, [sendTrazoNew]);
 
   return (
     <div className={styles.right_container}>
       {loadingUsers || loadingroles ? (
-        <p>Loading...</p>
+        <Loader notAll={true} />
       ) : (
         <FormAddTrazo
           dataUsersAll={dataUsers}
@@ -286,7 +286,6 @@ function RightSection({
           setPasoSave={setPasoGuardado}
           registerNewTrazo={registerNewTrazo}
           setSendTrazoNew={setSendTrazoNew}
-
           dataRolesAll={dataRoles}
           isRol={isRol}
           setIsRol={setIsRol}

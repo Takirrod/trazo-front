@@ -19,6 +19,7 @@ import { Rol } from "../types/Rol";
 import CheckBox from "../components/input/checkbox";
 import ModalBase from "../components/modal/modal";
 import FormEditRole from "./formEditRole";
+import Loader from "../components/loader/loader";
 
 type Person = {
   usuario: string;
@@ -183,7 +184,7 @@ function RoleTable({
   return (
     <>
       {loading ? (
-        <div>Cargando...</div>
+        <Loader notAll={true}/>
       ) : (
         <div className={styles.container_table_pagination}>
           <ModalRole

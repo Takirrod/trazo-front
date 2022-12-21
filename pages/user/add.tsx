@@ -12,6 +12,7 @@ import FormNewTrazo from "../../views/formNewTrazo";
 import ListDrag from "../../views/list_trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
 import styles from "../../styles/add/AddTrazo.module.css";
+import Loader from "../../components/loader/loader";
 
 const customStyles = {
   content: {
@@ -88,7 +89,7 @@ export default function Add() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <StickyNotesDefault
           modalAddButton={

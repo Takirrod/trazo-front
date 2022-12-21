@@ -9,6 +9,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import useAxios from "axios-hooks";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import Loader from "../../components/loader/loader";
 
 function Login() {
   const { data: session, status } = useSession();
@@ -79,6 +80,10 @@ function Login() {
   // console.log(data);
 
   // console.log(data);
+
+  if (session) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.container}>

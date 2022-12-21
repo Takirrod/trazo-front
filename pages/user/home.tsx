@@ -6,6 +6,7 @@ import InputNormal from "../../components/input/inputNormal";
 import { useRouter } from "next/router";
 import { TrazoCreate, TrazoGuardado, TrazoHome } from "../../types/Trazos";
 import useAxios from "axios-hooks";
+import Loader from "../../components/loader/loader";
 
 const customStyles = {
   content: {
@@ -52,7 +53,7 @@ function Home() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         <StickyNotesDefault
           modalAddButton={
@@ -67,16 +68,17 @@ function Home() {
             // if type trazo create go to paso 1
             const stepsNumberType = typeof trazo;
 
-            if (stepsNumberType === "object" && trazo.hasOwnProperty("pasoActual")) {
+            if (
+              stepsNumberType === "object" &&
+              trazo.hasOwnProperty("pasoActual")
+            ) {
               const trazoGuardado = trazo as TrazoHome;
-
 
               router.push({
                 pathname: "/user/trazado/",
                 query: { trazo: trazo.id, step: trazoGuardado.pasoActual },
               });
-            }
-            else {
+            } else {
               router.push({
                 pathname: "/user/trazado/",
                 query: { trazo: trazo.id, step: 1 },

@@ -5,34 +5,31 @@ import { TrazoCreate, TrazoGuardado, TrazoHome } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
 import styles from "../../styles/user/Home.module.css";
 import { useEffect, useState } from "react";
+import Loader from "../../components/loader/loader";
 
 export default function MiTrazo() {
   let token = "";
   let id = 0;
 
-
   const router = useRouter();
-
-
-
-
- 
-
 
   if (typeof window !== "undefined") {
     token = localStorage.getItem("token") || "";
     id = parseInt(localStorage.getItem("id_user") || "");
   }
 
-  const [{ data, loading, error }, refetch] = useAxios<TrazoGuardado[]>({
-    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado/all`,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const [{ data, loading, error }, refetch] = useAxios<TrazoGuardado[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado/all`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-  }, {
-    useCache: false
-  });
+    {
+      useCache: false,
+    }
+  );
 
   const [
     { data: postTrazo, loading: postLoadingTrazo, error: postErrorTrazo },
@@ -88,7 +85,7 @@ export default function MiTrazo() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
         // <Link className={styles.link} href={"/user/home"}>
         <StickyNotesDefault

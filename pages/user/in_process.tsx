@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { TrazoHome } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
+import Loader from "../../components/loader/loader";
 
 function InProcess() {
   let token = "";
@@ -33,26 +34,31 @@ function InProcess() {
     }
   }, [rolesNumber]);
 
-  const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>({
-    url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo/admin`,
-    params: {
-      terminados: false,
+  const [{ data, loading, error }, refetch] = useAxios<TrazoHome[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/trazo/admin`,
+      params: {
+        terminados: false,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     },
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  },
-  {
-    useCache: false
-  });
+    {
+      useCache: false,
+    }
+  );
 
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader />
       ) : (
-        <StickyNotesDefault stickyNotes={data!} tittlePage="Trazos En Proceso" />
+        <StickyNotesDefault
+          stickyNotes={data!}
+          tittlePage="Trazos En Proceso"
+        />
       )}
     </>
   );
