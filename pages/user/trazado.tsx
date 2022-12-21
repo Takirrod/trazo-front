@@ -13,6 +13,7 @@ import styles from "../../styles/user/Trazado.module.css";
 import { Trazo, TrazoHome, TrazoPasos } from "../../types/Trazos";
 import Navbar from "../../views/navbar";
 import NavbarAdmin from "../../views/navbarAdmin";
+import Loader from "../../components/loader/loader";
 
 const roles = ["Estudiante", "Profesor", "Secretario"];
 
@@ -80,14 +81,18 @@ function Roles() {
 
     if (data!.paso.length > stepNumber + 1) {
       // console.log(data?.paso.length, stepNumber + 1);
-      router.push({
-        pathname: "/user/trazado",
-        query: { trazo: query.trazo, step: stepNumber + 2 },
-      }, undefined, { shallow: true });
+      router.push(
+        {
+          pathname: "/user/trazado",
+          query: { trazo: query.trazo, step: stepNumber + 2 },
+        },
+        undefined,
+        { shallow: true }
+      );
 
       setActualStep(stepNumber + 2);
 
-      refetch();  
+      refetch();
     } else {
       router.push("/user/home");
     }
@@ -101,12 +106,10 @@ function Roles() {
 
   // if data.paso[stepNumber].idRol is in rolesNumber array enable button
 
-
   // if data.paso[stepNumber].idUsuario is not equal to id disable button
   useEffect(() => {
     setActualStep(stepNumber + 1);
   }, [stepNumber]);
-
 
   useEffect(() => {
     if (
@@ -129,7 +132,7 @@ function Roles() {
   return (
     <>
       {loading ? (
-        <h1>Loading...</h1>
+        <Loader />
       ) : (
         <div className={styles.container}>
           <Layout

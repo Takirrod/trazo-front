@@ -6,6 +6,7 @@ import InputNormal from "../../components/input/inputNormal";
 import ModalBase from "../../components/modal/modal";
 import { TrazoGuardado } from "../../types/Trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
+import Loader from "../../components/loader/loader";
 
 const customStyles = {
   content: {
@@ -63,7 +64,7 @@ export default function NewTrazo() {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Loader/>
       ) : (
         <StickyNotesDefault
           modalAddButton={
