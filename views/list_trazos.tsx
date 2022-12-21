@@ -11,6 +11,9 @@ import styles from "../styles/view/Dragable.module.css";
 import Loader from "../components/loader/loader";
 import ModalBase from "../components/modal/modal";
 import { useRouter } from "next/router";
+import FormUpdatePaso from "./formUpdatePaso";
+import { RolPublic } from "../types/RolPublic";
+import { User } from "../types/UserRegister";
 
 const listItems = [
   "Entertainment",
@@ -54,6 +57,8 @@ const ListDrag = ({
 
   const [showNewPaso, setShowNewPaso] = useState(false);
 
+  const [selectedStep, setSelectedStep] = useState<stepType | null>(null);
+
   const [{ loading }, deletePaso] = useAxios(
     {
       method: "DELETE",
@@ -77,7 +82,7 @@ const ListDrag = ({
     { manual: true }
   );
 
-  const postPaso = async (idTrazo: number) => {
+  const postPaso = async () => {
     const data = await newPaso({
       data: {
         nombre: "Paso",
@@ -86,11 +91,13 @@ const ListDrag = ({
         pasoNumero: listItems.length + 1,
         idUsuario: null,
         idRol: null,
-        idTrazo: idTrazo,
+        idTrazo: selectedStep?.idTrazoGuardado,
       },
     });
 
     refetchGuardados();
+
+    
   };
 
   const delPaso = async (idPaso: number) => {
@@ -118,6 +125,7 @@ const ListDrag = ({
             {listSteps.map((item, index) => (
               <li key={index}>
                 {index + 1}
+                
                 <div className={styles.container_sticky}>
                   <StickyCard
                     childHeader={<>{item.nombre}</>}
@@ -133,7 +141,10 @@ const ListDrag = ({
                               //   color={"white"}
                             />
                           }
-                          onClick={() => {}}
+                          onClick={() => {
+                            setShowNewPaso(true);
+                            setSelectedStep(item);
+                          }}
                         /> */}
                         <IconButtonNoEfect
                           tooltip="Eliminar Paso"
@@ -159,6 +170,13 @@ const ListDrag = ({
           </DraggableList>
         )}
       </div>
+
+      <ModalAddTrazo
+        postPaso={postPaso}
+        seletedStep={selectedStep!}
+        showModal={showNewPaso}
+        setShowModal={setShowNewPaso}
+      />
     </div>
   );
 };
@@ -166,22 +184,77 @@ const ListDrag = ({
 function ModalAddTrazo({
   showModal,
   setShowModal,
+  seletedStep,
+  postPaso,
 }: {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  seletedStep?: stepType;
+  postPaso: () => void;
 }) {
   let router = useRouter();
 
+  let token = "";
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token") || "";
+  }
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [{ data, loading, error }, refetch] = useAxios<User[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/all`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      useCache: false,
+    }
+  );
+
+  const [
+    { data: dataRoles, loading: loadingRoles, error: errorRoles },
+    refetchRoles,
+  ] = useAxios<RolPublic[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      useCache: false,
+    }
+  );
+
   return (
     <ModalBase
-      showButton={true}
+      showButton={false}
       txtButton="Guardar"
       showModal={showModal}
       setShowModal={setShowModal}
-      textTittle="Editar Trazo"
+      textTittle="Editar Paso"
       onClickCrear={() => {}}
     >
-      hola
+      {loading || loadingRoles || !seletedStep ? (
+        <Loader notAll={true} />
+      ) : (
+        <FormUpdatePaso
+          postPaso={postPaso}
+          selectedStep={seletedStep!}
+          setShowModal={setShowModal}
+          setIsChecked={setIsChecked}
+          isChecked={isChecked}
+          dataRolesAll={dataRoles!}
+          dataUsersAll={data!}
+        />
+      )}
     </ModalBase>
   );
 }

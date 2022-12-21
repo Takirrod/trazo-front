@@ -13,6 +13,9 @@ import ListDrag from "../../views/list_trazos";
 import StickyNotesDefault from "../../views/sticky_notes_general";
 import styles from "../../styles/add/AddTrazo.module.css";
 import Loader from "../../components/loader/loader";
+import FormUpdatePaso from "../../views/formUpdatePaso";
+import { RolPublic } from "../../types/RolPublic";
+import { User } from "../../types/UserRegister";
 
 const customStyles = {
   content: {
@@ -82,6 +85,42 @@ export default function Add() {
     }
   );
 
+  const [showModalNew, setShowModalNew] = useState(false);
+
+  const [{ loading: loadingNewPaso }, newPaso] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado/paso`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    { manual: true }
+  );
+
+  const postPaso = async (
+    nombre: string,
+    descripcion: string,
+    idUser: number | null,
+    idRol: number | null
+  ) => {
+    const data = await newPaso({
+      data: {
+        nombre: nombre,
+        descripcion: descripcion,
+        estaTerminado: false,
+        pasoNumero: steps.length + 1,
+        idUsuario: idUser,
+        idRol: idRol,
+        idTrazoGuardado: steps[0].idTrazoGuardado,
+      },
+    });
+
+    setShowModalEdit(!showModalEdit);
+    refetch();
+  };
+
   return (
     <>
       {loading ? (
@@ -112,6 +151,14 @@ export default function Add() {
         setShowModal={setShowModalEdit}
         changeSteps={changeSteps}
         setChangeSteps={setChangeSteps}
+        setShowModalNew={setShowModalNew}
+        showModalNew={showModalNew}
+      />
+
+      <ModalAddTrazo
+        showModal={showModalNew}
+        setShowModal={setShowModalNew}
+        postPaso={postPaso}
       />
     </>
   );
@@ -136,7 +183,7 @@ function ModalAddButton({
       textTittle="Agregar Trazo"
       onClickCrear={() => {}}
     >
-      <FormNewTrazo  router={router} setShowModal={setShowModal} />
+      <FormNewTrazo router={router} setShowModal={setShowModal} />
       {/* <Input labelText="Nombre del Paso"/> */}
     </ModalBase>
   );
@@ -152,6 +199,9 @@ function ModalEditTrazo({
   changeSteps,
   setChangeSteps,
 
+  setShowModalNew,
+  showModalNew,
+
   refetchGuardados,
 }: {
   showModal: boolean;
@@ -161,6 +211,9 @@ function ModalEditTrazo({
 
   changeSteps: boolean;
   setChangeSteps: React.Dispatch<React.SetStateAction<boolean>>;
+
+  setShowModalNew: React.Dispatch<React.SetStateAction<boolean>>;
+  showModalNew: boolean;
 
   refetchGuardados: () => void;
 }) {
@@ -176,7 +229,7 @@ function ModalEditTrazo({
       onClickCrear={() => {}}
     >
       <div className={styles.container_sub_tittle}>
-        {/* <IconButtonNoEfect
+        <IconButtonNoEfect
           tooltip="Agregar Paso"
           icon={
             <IconPlus
@@ -185,17 +238,99 @@ function ModalEditTrazo({
               //   color={"white"}
             />
           }
-          onClick={() => {}}
-        /> */}
+          onClick={() => {
+            setShowModalNew(!showModalNew);
+          }}
+        />
         <h2>Mueve los trazos para cambiar el orden</h2>
       </div>
       <ListDrag
-      refetchGuardados={refetchGuardados}
+        refetchGuardados={refetchGuardados}
         changeSteps={changeSteps}
         setChangeSteps={setChangeSteps}
         setListSteps={setListSteps}
         listSteps={steps}
       />
+    </ModalBase>
+  );
+}
+
+function ModalAddTrazo({
+  showModal,
+  setShowModal,
+  postPaso,
+}: {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  postPaso: (
+    nombre: string,
+    descripcion: string,
+    idUser: number | null,
+    idRol: number | null
+  )  => void;
+}) {
+  let router = useRouter();
+
+  let token = "";
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token") || "";
+  }
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [{ data, loading, error }, refetch] = useAxios<User[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/all`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      useCache: false,
+    }
+  );
+
+  const [
+    { data: dataRoles, loading: loadingRoles, error: errorRoles },
+    refetchRoles,
+  ] = useAxios<RolPublic[]>(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/all`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    {
+      useCache: false,
+    }
+  );
+
+  return (
+    <ModalBase
+      showButton={false}
+      txtButton="Guardar"
+      showModal={showModal}
+      setShowModal={setShowModal}
+      textTittle="Editar Paso"
+      onClickCrear={() => {}}
+    >
+      {loading || loadingRoles ? (
+        <Loader notAll={true} />
+      ) : (
+        <FormUpdatePaso
+          postPaso={postPaso}
+          setShowModal={setShowModal}
+          setIsChecked={setIsChecked}
+          isChecked={isChecked}
+          dataRolesAll={dataRoles!}
+          dataUsersAll={data!}
+        />
+      )}
     </ModalBase>
   );
 }
