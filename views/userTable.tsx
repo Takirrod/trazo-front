@@ -86,6 +86,7 @@ function UsersTable() {
     const data = await delUser({
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/${userID}`,
     });
+    refetch()
   };
 
   let roles: Rol[] = [];
@@ -151,7 +152,7 @@ function UsersTable() {
             }
             onClick={() => {
               deleteUser({ userID: info.getValue().toString() });
-              refetch();
+              
 
             }}
           />
