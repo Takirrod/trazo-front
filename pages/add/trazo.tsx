@@ -149,7 +149,7 @@ function LeftSection({
 
   useEffect(() => {
     if (dataRoles) {
-      dataUsers.map((user) => {
+      dataRoles.map((user) => {
         setRoles((prev) => [...prev, { id: user.id, display: user.nombre }]);
       });
     }
