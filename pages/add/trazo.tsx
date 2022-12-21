@@ -171,7 +171,7 @@ function LeftSection({
             childBody={
               <>
                 <MentionsInput
-                  placeholder="Escribe tu trazo... @ para mencionar a un usuario # para agregar un rol"
+                  placeholder="Escribe tu trazo... "
                   className={styles.text_area}
                   onChange={(e) => {
                     setTextMention(e.target.value);

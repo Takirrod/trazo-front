@@ -55,7 +55,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
 
         <CheckBox isChecked={props.isRol} onClick={() => {
           props.setIsRol(!props.isRol)
-        }}>Rol/Public</CheckBox>
+        }}>Asignar a Usuario o Rol</CheckBox>
 
         {!props.isRol && <InputSuggestions props={props} data={props.dataUsersAll} />}
 
@@ -169,8 +169,8 @@ function InputSuggestions({ data, props }: { data: User[], props: OtherProps & F
     <DatalistInput
       value={value}
       setValue={setValue}
-      placeholder="Seleccionar Persona"
-      label="Seleccionar Persona"
+      placeholder="Seleccionar a Usuario"
+      label="Seleccionar a Usuario"
       onSelect={(item) => {
         props.values.description = item.id
         // setValue("")
