@@ -1,6 +1,6 @@
 import useAxios from "axios-hooks";
 import { type } from "os";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DraggableList from "react-draggable-lists";
 import IconButtonNoEfect from "../components/button/iconButtonNoEffect";
 import StickyCard from "../components/card/stickyCard";
@@ -9,6 +9,8 @@ import IconEdit from "../components/icons/edit";
 
 import styles from "../styles/view/Dragable.module.css";
 import Loader from "../components/loader/loader";
+import ModalBase from "../components/modal/modal";
+import { useRouter } from "next/router";
 
 const listItems = [
   "Entertainment",
@@ -50,6 +52,8 @@ const ListDrag = ({
     token = localStorage.getItem("token") || "";
   }
 
+  const [showNewPaso, setShowNewPaso] = useState(false);
+
   const [{ loading }, deletePaso] = useAxios(
     {
       method: "DELETE",
@@ -60,6 +64,34 @@ const ListDrag = ({
     },
     { manual: true }
   );
+
+  const [{ loading: loadingNewPaso }, newPaso] = useAxios(
+    {
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/paso`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    { manual: true }
+  );
+
+  const postPaso = async (idTrazo: number) => {
+    const data = await newPaso({
+      data: {
+        nombre: "Paso",
+        descripcion: "Descripcion",
+        estaTerminado: false,
+        pasoNumero: listItems.length + 1,
+        idUsuario: null,
+        idRol: null,
+        idTrazo: idTrazo,
+      },
+    });
+
+    refetchGuardados();
+  };
 
   const delPaso = async (idPaso: number) => {
     const data = await deletePaso({
@@ -79,7 +111,7 @@ const ListDrag = ({
   return (
     <div className={styles.container_list}>
       <div style={{ width: 300, margin: "0 auto" }}>
-        {loading ? (
+        {loading || loadingNewPaso ? (
           <Loader notAll={true} />
         ) : (
           <DraggableList width={300} height={150} rowSize={1}>
@@ -92,7 +124,7 @@ const ListDrag = ({
                     childBody={
                       <>
                         {item.descripcion}
-                        <IconButtonNoEfect
+                        {/* <IconButtonNoEfect
                           tooltip="Editar Paso"
                           icon={
                             <IconEdit
@@ -102,7 +134,7 @@ const ListDrag = ({
                             />
                           }
                           onClick={() => {}}
-                        />
+                        /> */}
                         <IconButtonNoEfect
                           tooltip="Eliminar Paso"
                           icon={
@@ -130,5 +162,28 @@ const ListDrag = ({
     </div>
   );
 };
+
+function ModalAddTrazo({
+  showModal,
+  setShowModal,
+}: {
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  let router = useRouter();
+
+  return (
+    <ModalBase
+      showButton={true}
+      txtButton="Guardar"
+      showModal={showModal}
+      setShowModal={setShowModal}
+      textTittle="Editar Trazo"
+      onClickCrear={() => {}}
+    >
+      hola
+    </ModalBase>
+  );
+}
 
 export default ListDrag;

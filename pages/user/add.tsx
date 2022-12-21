@@ -176,7 +176,7 @@ function ModalEditTrazo({
       onClickCrear={() => {}}
     >
       <div className={styles.container_sub_tittle}>
-        <IconButtonNoEfect
+        {/* <IconButtonNoEfect
           tooltip="Agregar Paso"
           icon={
             <IconPlus
@@ -186,7 +186,7 @@ function ModalEditTrazo({
             />
           }
           onClick={() => {}}
-        />
+        /> */}
         <h2>Mueve los trazos para cambiar el orden</h2>
       </div>
       <ListDrag
