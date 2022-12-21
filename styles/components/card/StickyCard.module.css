@@ -4,7 +4,7 @@
 
   display: grid;
   grid:
-    "header" 7%
+    "header" auto
     "main" 1fr
     "footer" 20%
     / 1fr;

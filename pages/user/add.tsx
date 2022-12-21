@@ -82,10 +82,6 @@ export default function Add() {
     }
   );
 
-  useEffect(() => {
-    // refetch();
-  }, [setChangeSteps]);
-
   return (
     <>
       {loading ? (
@@ -109,6 +105,7 @@ export default function Add() {
         />
       )}
       <ModalEditTrazo
+        refetchGuardados={refetch}
         setListSteps={setSteps}
         steps={steps}
         showModal={showModalEdit}
@@ -139,7 +136,7 @@ function ModalAddButton({
       textTittle="Agregar Trazo"
       onClickCrear={() => {}}
     >
-      <FormNewTrazo router={router} setShowModal={setShowModal} />
+      <FormNewTrazo  router={router} setShowModal={setShowModal} />
       {/* <Input labelText="Nombre del Paso"/> */}
     </ModalBase>
   );
@@ -154,6 +151,8 @@ function ModalEditTrazo({
 
   changeSteps,
   setChangeSteps,
+
+  refetchGuardados,
 }: {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -162,6 +161,8 @@ function ModalEditTrazo({
 
   changeSteps: boolean;
   setChangeSteps: React.Dispatch<React.SetStateAction<boolean>>;
+
+  refetchGuardados: () => void;
 }) {
   let router = useRouter();
 
@@ -189,6 +190,7 @@ function ModalEditTrazo({
         <h2>Mueve los trazos para cambiar el orden</h2>
       </div>
       <ListDrag
+      refetchGuardados={refetchGuardados}
         changeSteps={changeSteps}
         setChangeSteps={setChangeSteps}
         setListSteps={setListSteps}

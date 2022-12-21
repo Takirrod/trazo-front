@@ -6,6 +6,7 @@ import Input from "../components/input/input";
 import CheckBox from "../components/input/checkbox";
 import SimpleButton from "../components/button/simpleButtton";
 import { Rol } from "../types/Rol";
+import { ToastContainer, toast } from "react-toastify";
 
 // Shape of form values
 interface FormValues {
@@ -27,6 +28,7 @@ const InnerForm = (props: OtherProps & FormikProps<FormValues>) => {
   const { touched, errors, isSubmitting, setIsChecked } = props;
   return (
     <Form>
+
       <div className={styles.container_form}>
         <Input labelText="Nombre" id="name" />
         {touched.name && errors.name && <div>{errors.name}</div>}

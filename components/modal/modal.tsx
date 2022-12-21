@@ -52,6 +52,7 @@ export default function ModalBase({
             marginRight: "-50%",
             backgroundColor: "var(--background)",
             transform: "translate(-50%, -50%)",
+            maxHeight: "80vh",
             borderRadius: "10px",
           },
         }}

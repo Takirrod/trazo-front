@@ -8,6 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useReducer, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -30,7 +31,7 @@ type Person = {
 function RoleTable({
   dataRoles,
   loading,
-  refetch
+  refetch,
 }: {
   dataRoles: Rol[];
   loading: boolean;
@@ -62,13 +63,27 @@ function RoleTable({
   );
 
   const delRol = async (id: number) => {
-    const data = await deleteRol({
-      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/delete/${id}`,
+    toast.success("Rol borrado", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      delay: 200,
+
     });
+    // const data = await deleteRol({
+    //   url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/rol/delete/${id}`,
+    // });
 
     // console.log(data);
 
+
     refetch();
+
   };
 
   useEffect(() => {
@@ -162,6 +177,7 @@ function RoleTable({
               }
               onClick={() => {
                 delRol(info.getValue().id);
+  
               }}
             />
           )}
@@ -184,9 +200,11 @@ function RoleTable({
   return (
     <>
       {loading ? (
-        <Loader notAll={true}/>
+        <Loader notAll={true} />
       ) : (
         <div className={styles.container_table_pagination}>
+          <ToastContainer limit={2} />
+
           <ModalRole
             refetch={refetch}
             token={token}
@@ -196,6 +214,7 @@ function RoleTable({
             showModal={modal}
             setShowModal={setModal}
           />
+
           <table className={styles.table}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -332,9 +351,20 @@ function ModalRole({
       data: setNewRoles(name, description),
     });
 
-    // console.log(data);
-
     refetch();
+
+    // console.log(data);
+    toast.success("Roles editado", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      delay: 1000,
+    });
   };
 
   function setNewRoles(name: string, description: string): Rol {

@@ -8,6 +8,7 @@ import IconDelete from "../components/icons/delete";
 import IconEdit from "../components/icons/edit";
 
 import styles from "../styles/view/Dragable.module.css";
+import Loader from "../components/loader/loader";
 
 const listItems = [
   "Entertainment",
@@ -35,11 +36,13 @@ const ListDrag = ({
   setListSteps,
   changeSteps,
   setChangeSteps,
+  refetchGuardados,
 }: {
   listSteps: stepType[];
   setListSteps: React.Dispatch<React.SetStateAction<stepType[]>>;
   changeSteps: boolean;
   setChangeSteps: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchGuardados: () => void;
 }) => {
   let token = "";
 
@@ -47,7 +50,7 @@ const ListDrag = ({
     token = localStorage.getItem("token") || "";
   }
 
-  const [, deletePaso] = useAxios(
+  const [{ loading }, deletePaso] = useAxios(
     {
       method: "DELETE",
       headers: {
@@ -66,57 +69,63 @@ const ListDrag = ({
     setListSteps(listSteps.filter((item) => item.id !== idPaso));
     setChangeSteps(!changeSteps);
 
+    refetchGuardados();
   };
 
   useEffect(() => {
-    console.log(listSteps);
+    // console.log(listSteps);
   }, [changeSteps]);
 
   return (
     <div className={styles.container_list}>
       <div style={{ width: 300, margin: "0 auto" }}>
-        <DraggableList width={300} height={130} rowSize={1}>
-          {listSteps.map((item, index) => (
-            <li key={index}>
-              <div>
-                <StickyCard
-                  childHeader={<>{item.nombre}</>}
-                  childBody={
-                    <>
-                      {item.descripcion}
-                      <IconButtonNoEfect
-                        tooltip="Editar Paso"
-                        icon={
-                          <IconEdit
-                            width={"1em"}
-                            height={"1em"}
-                            //   color={"white"}
-                          />
-                        }
-                        onClick={() => {}}
-                      />
-                      <IconButtonNoEfect
-                        tooltip="Eliminar Paso"
-                        icon={
-                          <IconDelete
-                            width={"1em"}
-                            height={"1em"}
-                            //   color={"white"}
-                          />
-                        }
-                        onClick={() => {
-                          delPaso(item.id);
-                        }}
-                      />
-                    </>
-                  }
-                  align_items={"center"}
-                  justify_content={"center"}
-                />
-              </div>
-            </li>
-          ))}
-        </DraggableList>
+        {loading ? (
+          <Loader notAll={true} />
+        ) : (
+          <DraggableList width={300} height={150} rowSize={1}>
+            {listSteps.map((item, index) => (
+              <li key={index}>
+                {index + 1}
+                <div className={styles.container_sticky}>
+                  <StickyCard
+                    childHeader={<>{item.nombre}</>}
+                    childBody={
+                      <>
+                        {item.descripcion}
+                        <IconButtonNoEfect
+                          tooltip="Editar Paso"
+                          icon={
+                            <IconEdit
+                              width={"1em"}
+                              height={"1em"}
+                              //   color={"white"}
+                            />
+                          }
+                          onClick={() => {}}
+                        />
+                        <IconButtonNoEfect
+                          tooltip="Eliminar Paso"
+                          icon={
+                            <IconDelete
+                              width={"1em"}
+                              height={"1em"}
+                              //   color={"white"}
+                            />
+                          }
+                          onClick={() => {
+                            delPaso(item.id);
+                          }}
+                        />
+                      </>
+                    }
+                    align_items={"center"}
+                    justify_content={"center"}
+                  />
+                </div>
+              </li>
+            ))}
+          </DraggableList>
+        )}
       </div>
     </div>
   );

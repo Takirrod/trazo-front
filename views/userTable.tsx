@@ -8,7 +8,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useReducer, useState } from "react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import IconButtonNoEfect from "../components/button/iconButtonNoEffect";
@@ -87,7 +88,21 @@ function UsersTable() {
     const data = await delUser({
       url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/user/${userID}`,
     });
+
     refetch();
+
+    setTimeout(() => {
+      toast.success("Usuario Eliminado", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }, 200);
   };
 
   let roles: Rol[] = [];
@@ -197,6 +212,8 @@ function UsersTable() {
             setCheckBoxes={setCheckBoxes}
             loading={loadingUserRol}
           ></ModalUser>
+          <ToastContainer limit={2}/>
+
           <table className={styles.table}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -361,6 +378,18 @@ function ModalUser({
       onClickCrear={() => {
         registerNewUser();
         setShowModal(false);
+        setTimeout(() => {
+          toast.success("Roles Actualizados", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }, 200);
       }}
     >
       <div className={styles.container_roles}>
