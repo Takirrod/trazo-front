@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     gap: 1em;
-    color: black;
+    color: white;
 }
 
 .container_all  h1{
@@ -67,9 +67,10 @@
     text-align: center;
     flex-direction: column;
     width: 100%;
+    color: black;
     /* padding: 1em; */
     /* background-color: #443e6d; */
-    color: whitesmoke;
+    /* color: whitesmoke; */
     /* gap: 0.2em; */
     /* background-color: #e6e6e6; */
   }
@@ -77,5 +78,6 @@
   /* label for input */
   .container_input label{
     font-size: 1em;
+    color: white;
   }
   
