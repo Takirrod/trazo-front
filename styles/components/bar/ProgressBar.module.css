@@ -3,9 +3,10 @@
 }
 
 .step {
-    width: 100%;
-
-    min-width: 5em;
+    width: fit-content;
+    /* display: flex; */
+    /* gap: 1em; */
+    min-width: 4em;
     /* background-color: #f1f1f1; */
     /* overflow: scroll; */
 
@@ -64,7 +65,7 @@
 
 .wrapper {
     /* position: absolute; */
-    max-width:min-content ;
+    max-width:fit-content ;
     /* padding-left: 10em; */
  
     overflow: scroll;
