@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import FormUpdatePaso from "./formUpdatePaso";
 import { RolPublic } from "../types/RolPublic";
 import { User } from "../types/UserRegister";
+import FormNewPaso from "./formNewPaso";
 
 const listItems = [
   "Entertainment",
@@ -70,10 +71,10 @@ const ListDrag = ({
     { manual: true }
   );
 
-  const [{ loading: loadingNewPaso }, newPaso] = useAxios(
+  const [{ loading: loadingNewPaso }, updatePaso] = useAxios(
     {
-      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/paso`,
-      method: "POST",
+      url: `${process.env.NEXT_PUBLIC_DATABASE_URL}/guardado/paso`,
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -82,18 +83,40 @@ const ListDrag = ({
     { manual: true }
   );
 
-  const postPaso = async () => {
-    const data = await newPaso({
+  const postPaso = async (
+    nombre: string,
+    descripcion: string,
+    idUser: number | null,
+    idRol: number | null
+  ) => {
+    const data = await updatePaso({
       data: {
-        nombre: "Paso",
-        descripcion: "Descripcion",
-        estaTerminado: false,
-        pasoNumero: listItems.length + 1,
-        idUsuario: null,
-        idRol: null,
-        idTrazo: selectedStep?.idTrazoGuardado,
+        nombre: nombre,
+        descripcion: descripcion,
+        id: selectedStep?.id,
+        pasoNumero: selectedStep?.pasoNumero,
+        idUsuario: idUser,
+        idRol: idRol,
+        idTrazoGuardado: selectedStep?.idTrazoGuardado,
       },
     });
+
+    const newListSteps: stepType[] = listSteps.map((item) => {
+      if (item.id === selectedStep?.id) {
+        return {
+          ...item,
+          nombre: nombre,
+          descripcion: descripcion,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    setListSteps(newListSteps);
+
+    // setListSteps(listSteps.filter((item) => item.id !== idPaso));
+    // setChangeSteps(!changeSteps);
 
     refetchGuardados();
   };
@@ -130,21 +153,22 @@ const ListDrag = ({
                     childBody={
                       <div className={styles.container_sticky_bosy_list}>
                         {item.descripcion}
-                        {/* <IconButtonNoEfect
-                          tooltip="Editar Paso"
-                          icon={
-                            <IconEdit
-                              width={"1em"}
-                              height={"1em"}
-                              //   color={"white"}
-                            />
-                          }
-                          onClick={() => {
-                            setShowNewPaso(true);
-                            setSelectedStep(item);
-                          }}
-                        /> */}
+
                         <div>
+                          <IconButtonNoEfect
+                            tooltip="Editar Paso"
+                            icon={
+                              <IconEdit
+                                width={"1em"}
+                                height={"1em"}
+                                //   color={"white"}
+                              />
+                            }
+                            onClick={() => {
+                              setShowNewPaso(true);
+                              setSelectedStep(item);
+                            }}
+                          />
                           <IconButtonNoEfect
                             tooltip="Eliminar Paso"
                             icon={
@@ -190,7 +214,12 @@ function ModalAddTrazo({
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   seletedStep?: stepType;
-  postPaso: () => void;
+  postPaso: (
+    nombre: string,
+    descripcion: string,
+    idUser: number | null,
+    idRol: number | null
+  ) => void;
 }) {
   let router = useRouter();
 
@@ -245,7 +274,7 @@ function ModalAddTrazo({
       {loading || loadingRoles || !seletedStep ? (
         <Loader notAll={true} />
       ) : (
-        <FormUpdatePaso
+        <FormNewPaso
           postPaso={postPaso}
           selectedStep={seletedStep!}
           setShowModal={setShowModal}
