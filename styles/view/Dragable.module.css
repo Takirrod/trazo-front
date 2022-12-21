@@ -10,3 +10,10 @@
     overflow: hidden;
     overflow-y: auto;
 }
+
+.container_sticky_bosy_list{
+    width: 100%;
+    /* background-color: aliceblue; */
+    display: flex;
+    justify-content: space-around;
+}

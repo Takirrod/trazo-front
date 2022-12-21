@@ -96,8 +96,6 @@ const ListDrag = ({
     });
 
     refetchGuardados();
-
-    
   };
 
   const delPaso = async (idPaso: number) => {
@@ -125,12 +123,12 @@ const ListDrag = ({
             {listSteps.map((item, index) => (
               <li key={index}>
                 {index + 1}
-                
+
                 <div className={styles.container_sticky}>
                   <StickyCard
                     childHeader={<>{item.nombre}</>}
                     childBody={
-                      <>
+                      <div className={styles.container_sticky_bosy_list}>
                         {item.descripcion}
                         {/* <IconButtonNoEfect
                           tooltip="Editar Paso"
@@ -146,20 +144,22 @@ const ListDrag = ({
                             setSelectedStep(item);
                           }}
                         /> */}
-                        <IconButtonNoEfect
-                          tooltip="Eliminar Paso"
-                          icon={
-                            <IconDelete
-                              width={"1em"}
-                              height={"1em"}
-                              //   color={"white"}
-                            />
-                          }
-                          onClick={() => {
-                            delPaso(item.id);
-                          }}
-                        />
-                      </>
+                        <div>
+                          <IconButtonNoEfect
+                            tooltip="Eliminar Paso"
+                            icon={
+                              <IconDelete
+                                width={"1em"}
+                                height={"1em"}
+                                //   color={"white"}
+                              />
+                            }
+                            onClick={() => {
+                              delPaso(item.id);
+                            }}
+                          />
+                        </div>
+                      </div>
                     }
                     align_items={"center"}
                     justify_content={"center"}
