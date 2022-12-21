@@ -64,8 +64,8 @@
 
 .wrapper {
     /* position: absolute; */
-    max-width: 25em;
-    padding-left: 10em;
+    max-width:min-content ;
+    /* padding-left: 10em; */
  
     overflow: scroll;
     /* background-color: blue; */
