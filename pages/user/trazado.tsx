@@ -30,11 +30,11 @@ function Roles() {
     roles = localStorage.getItem("id_rol") || "";
   }
 
-  let rolesNumber: number[] = [];
+  const [rolesNumber, setRolesNumber] = useState<number[]>([]);
 
   useEffect(() => {
     if (roles) {
-      rolesNumber = JSON.parse(roles);
+      setRolesNumber(JSON.parse(roles));
     }
   }, [roles]);
 
