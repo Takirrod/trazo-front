@@ -42,10 +42,11 @@ function ProgressBarOnlyNumber({
       secondaryBtnClass={styles.button}
       stepClass={styles.step}
       wrapperClass={terminado ? styles.wrapper_trazado_full : styles.wrapper_trazado}
+      contentClass={styles.content}
+
       startingStep={currentStep - 1}
       onSubmit={onFormSubmit}
       steps={steps}
-      contentClass={styles.content}
     />
   );
 }

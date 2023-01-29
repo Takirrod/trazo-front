@@ -14,6 +14,7 @@ import { Trazo, TrazoHome, TrazoPasos } from "../../types/Trazos";
 import Navbar from "../../views/navbar";
 import NavbarAdmin from "../../views/navbarAdmin";
 import Loader from "../../components/loader/loader";
+import StepProgressBar from "../../components/bar/stepBar";
 
 const roles = ["Estudiante", "Profesor", "Secretario"];
 
@@ -129,6 +130,27 @@ function Roles() {
     }
   }, [loading]);
 
+  const steps = [];
+
+  for (let i = 0; i < data?.cantidadPasos!; i++) {
+    steps.push({
+      label: "",
+      subtitle: "",
+      name: "",
+      content: <></>,
+      clickedStep: () => {
+        router.push(
+          {
+            pathname: "/user/trazado",
+            query: { trazo: query.trazo, step: i + 1 },
+          },
+          undefined,
+          { shallow: true }
+        );
+      },
+    });
+  }
+
   return (
     <>
       {loading ? (
@@ -140,10 +162,26 @@ function Roles() {
           >
             <div className={styles.container_sticky_card}>
               <div className={styles.containerprogressbar}>
-                <ProgressBarOnlyNumber
+                {/* <ProgressBarOnlyNumber
                   stepsNumber={data?.cantidadPasos || 1}
                   currentStep={actualStep}
                   terminado={data?.estaTerminado || false}
+                /> */}
+
+                <StepProgressBar
+                  stepsNumber={data?.cantidadPasos || 1}
+                  startingStep={
+                    data?.cantidadPasos == actualStep
+                      ? actualStep
+                      : actualStep - 1
+                  }
+                  onSubmit={() => {}}
+                  primaryBtnClass={styles.button}
+                  secondaryBtnClass={styles.button}
+                  stepClass={styles.step}
+                  wrapperClass={styles.wrapper_trazado}
+                  contentClass={styles.content}
+                  steps={steps}
                 />
               </div>
 

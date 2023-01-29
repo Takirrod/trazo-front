@@ -9,6 +9,8 @@
     /* max-height: 165px; */
     overflow: hidden;
     overflow-y: auto;
+    scrollbar-width: none;
+
 }
 
 .container_sticky_bosy_list{

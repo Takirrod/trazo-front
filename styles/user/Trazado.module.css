@@ -59,4 +59,91 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
+
+.button{
+  display: none;
+}
+
+.step {
+  width: fit-content;
+  /* display: flex; */
+  /* gap: 1em; */
+  min-width: 4em;
+  /* background-color: #f1f1f1; */
+  /* overflow: scroll; */
+
+  user-select: contain;
+}
+
+.wrapper_full li span {
+  background-color: var(--succesBar) !important;
+}
+.wrapper_trazado_full li span {
+  background-color: var(--succesBar) !important;
+}
+
+.wrapper_full {
+  /* position: absolute; */
+  max-width: 25em;
+  /* padding-left: 10em; */
+
+  /* padding-top: 1em; */
+  overflow: scroll;
+  /* background-color: blue; */
+  margin: 0;
+  max-height: 6em;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+
+}
+
+.wrapper_trazado{
+  /* position: absolute; */
+  max-width: 25em;
+  /* padding-left: 10em; */
+
+  /* padding-top: 1em; */
+  overflow: scroll;
+  /* background-color: blue; */
+  margin: 0;
+  max-height: 6em;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+
+}
+
+.wrapper_trazado_full{
+  /* position: absolute; */
+  max-width: 100%;
+  /* padding-left: 10em; */
+
+
+  /* padding-top: 1em; */
+  overflow: scroll;
+  /* background-color: blue; */
+  margin: 0;
+  max-height: 6em;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+
+}
+
+.wrapper {
+  /* position: absolute; */
+  max-width:fit-content ;
+  /* padding-left: 10em; */
+
+  overflow: scroll;
+  /* background-color: blue; */
+  margin: 0;
+  max-height: 6em;
+  overflow-y: hidden;
+  scrollbar-width: none;
+
+}
+
