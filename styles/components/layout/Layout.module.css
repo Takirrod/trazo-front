@@ -28,7 +28,7 @@
     var(--transparent) 45%,
     var(--transparent) 100%
   );
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .container_navbar{

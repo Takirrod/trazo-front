@@ -29,12 +29,13 @@
 }
 
 .iconbtn_container {
-  position: relative;
-  display: flex;
+  position:fixed;
+  /* width: 100vw; */
+  /* display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
-  left: 3em;
-  bottom: 48%;
+  justify-content: flex-end; */
+  right: 6vw;
+  top: 5vh;
 
   /* background-color: aliceblue; */
 }

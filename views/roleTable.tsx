@@ -120,6 +120,7 @@ function RoleTable({
                 borderRadius: "5px",
                 fontWeight: "bold",
                 minWidth: "5em",
+                color: "var(--primaryAccent)",
               }}
             >
               Si
