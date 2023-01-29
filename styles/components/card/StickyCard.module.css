@@ -6,9 +6,11 @@
   grid:
     "header" auto
     "main" 1fr
-    "footer" 20%
-    / 1fr;
-  gap: 8px;
+    "footer" auto
+    / 100%;
+
+
+
 }
 
 
@@ -23,6 +25,10 @@
   display: flex;
   font-size: small;
   font-weight: bold;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
 }
 .main {
   grid-area: main;

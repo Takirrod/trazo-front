@@ -23,7 +23,7 @@
 .wrapper_full {
     /* position: absolute; */
     max-width: 25em;
-    padding-left: 10em;
+    /* padding-left: 10em; */
  
     /* padding-top: 1em; */
     overflow: scroll;
@@ -36,8 +36,8 @@
 
 .wrapper_trazado{
     /* position: absolute; */
-    max-width: 100%;
-    padding-left: 10em;
+    max-width: 25em;
+    /* padding-left: 10em; */
  
     /* padding-top: 1em; */
     overflow: scroll;
@@ -51,7 +51,7 @@
 .wrapper_trazado_full{
     /* position: absolute; */
     max-width: 100%;
-    padding-left: 10em;
+    /* padding-left: 10em; */
  
  
     /* padding-top: 1em; */

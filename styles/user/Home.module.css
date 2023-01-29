@@ -4,26 +4,29 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  
+  
   /* text-decoration: none !important; */
-  color: black;
 }
 
 .container_sticky_card {
-  height: 70%;
-  width: 100%;
-  padding: 2em;
+  /* height: 70%; */
+  /* width:ma; */
+  /* margin-left: 2em; */
   display: grid;
-  gap: 2rem;
-  grid-auto-rows: 14rem;
-  grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
-  overflow: scroll;
+  gap: 2em;
+  grid-auto-rows: 10em;
+  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+  overflow:visible;
+  margin: 1em;
+
 }
 
 .container_header_home {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   color: whitesmoke;
 }
 
@@ -32,7 +35,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  left: 3em;
+  /* left: 3em; */
   bottom: 48%;
 
   /* background-color: aliceblue; */
@@ -43,6 +46,7 @@
   justify-content: space-around;
   align-items: center;
   color: whitesmoke;
+  margin-top: 2%;
 
 }
 

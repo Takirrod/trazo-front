@@ -24,33 +24,31 @@ export default function StickyCard({
   childFooter,
   align_items,
   justify_content,
-  height = "90%",
-  width = "90%",
+  height = "100%",
+  width = "100%",
   background_color = "#FFE279",
   align_items_header = "center",
   justify_content_header = "center",
   align_items_body = "center",
   justify_content_body = "center",
-  OnClick=()=>{},
+  OnClick = () => {},
 }: LayoutProps) {
   return (
     <>
       <SimpleCard
-      OnClick={OnClick}
+        OnClick={OnClick}
         height={height}
         width={width}
         align_items={align_items}
         justify_content={justify_content}
+        gap={"auto"}
       >
         <section
           style={{ backgroundColor: `${background_color}` }}
           className={styles.layout}
         >
           <div
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+        
             className={styles.header}
           >
             {childHeader}

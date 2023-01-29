@@ -19,6 +19,7 @@
 .div2 {
   height: 80vh;
   width: 100%;
+
   background: var(--primary);
   background: linear-gradient(
     133deg,
