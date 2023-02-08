@@ -77,7 +77,7 @@ export default function MiTrazo() {
       estaTerminado: false,
       pasoActual: 1,
       idUsuario: id,
-      idRol: id, //TODO ask takis
+      idRol: null, //TODO ask takis
       paso: pasos,
     };
   }
